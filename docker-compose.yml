@@ -1,23 +1,33 @@
 version: '3'
 services:
-  postgres:
-    image: postgres
+#  postgres:
+#    image: postgres
+#    restart: always
+#    environment:
+#      POSTGRES_USER: admin
+#      POSTGRES_PASSWORD: admin
+#      POSTGRES_DB: postgres_db
+#    ports:
+#      - "5432:5432"
+  mysql:
+    image: mysql:5.7
     restart: always
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: springdb
+      MYSQL_DATABASE: scheduling_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: root
     ports:
-      - "5432:5432"
-    volumes:
-      - ./data:/var/lib/postgresql/data
+      - '3306:3306'
+    expose:
+      - '3306'
 #  app:
 #    build: .
 #    ports:
 #      - "8080:8080"
 #    depends_on:
-#      - db
+#      - mysql
 #    environment:
-#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/springdb
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mysql_db
 #      SPRING_DATASOURCE_USERNAME: admin
 #      SPRING_DATASOURCE_PASSWORD: admin
