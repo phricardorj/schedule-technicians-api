@@ -7,3 +7,8 @@ Testing what's new in Spring Boot 3 and Java 20!
 - Mudanças nos Requisitos Mínimos
 - Atualizações de dependência
 - Nas novas notas de lançamento do Spring boot 3, eles informam que esta versão usará Jakarta EE 9 (libs nomeadas como jakarta) em vez de JEE (libs nomeadas como javax).
+
+### Before build, run below command:
+````shell
+docker-compose up -d
+````
