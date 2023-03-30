@@ -1,6 +1,5 @@
 package br.com.phricardo.schedulingtechnicians.dto;
 
-import br.com.phricardo.schedulingtechnicians.validation.cnpj.CNPJ;
 import br.com.phricardo.schedulingtechnicians.validation.cpf.CPF;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -19,7 +18,7 @@ public class CustomerDTO {
 
     @NotBlank
     private String name;
-    @NotBlank @CNPJ
+    @NotBlank @CPF
     private String cpf;
     @NotNull @Past
     private LocalDate dateOfBirth;
