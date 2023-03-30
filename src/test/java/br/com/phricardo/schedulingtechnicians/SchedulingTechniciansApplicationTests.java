@@ -1,10 +1,10 @@
-package br.com.phricardo.scheduling;
+package br.com.phricardo.schedulingtechnicians;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SchedulingApplicationTests {
+class SchedulingTechniciansApplicationTests {
 
 	@Test
 	void contextLoads() {
