@@ -1,5 +1,6 @@
 package br.com.phricardo.schedulingtechnicians.entities;
 
+import br.com.phricardo.schedulingtechnicians.util.EnrollmentGenerator;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,9 +23,16 @@ public class Technician {
     private String name;
     private String cpf;
     private LocalDate dateOfBirth;
+    private String email;
     private String phone;
     private String cellphone;
+    private Integer enrollment;
 
     @Embedded
     private Address address;
+
+    @PrePersist
+    private void prePersist() {
+        this.enrollment = EnrollmentGenerator.generate();
+    }
 }

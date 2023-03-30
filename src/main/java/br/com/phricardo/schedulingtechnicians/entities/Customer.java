@@ -22,6 +22,7 @@ public class Customer {
     private String name;
     private String cpf;
     private LocalDate dateOfBirth;
+    private String email;
     private String phone;
     private String cellphone;
 

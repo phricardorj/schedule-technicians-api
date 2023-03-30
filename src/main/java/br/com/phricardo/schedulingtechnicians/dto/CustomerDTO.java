@@ -2,9 +2,7 @@ package br.com.phricardo.schedulingtechnicians.dto;
 
 import br.com.phricardo.schedulingtechnicians.validation.cpf.CPF;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +20,8 @@ public class CustomerDTO {
     private String cpf;
     @NotNull @Past
     private LocalDate dateOfBirth;
+    @NotBlank @Pattern(regexp = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")
+    private String email;
     @NotBlank
     private String phone;
     @NotBlank
