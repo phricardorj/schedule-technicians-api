@@ -1,7 +1,7 @@
-# Scheduling Technicians API
+![idJava API](./stapi_logo.png 'STAPI - Scheduling Technicians API')
 ------------------------
 This API allows the registration of technicians and customers to schedule a technical
-visit at the customer's address. It was developed for Testing what's new in Spring Boot 3 and Java 20!
+visit at the customer's address.
 
 ### Techs
 - [Spring Boot 3.0.0](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0.0-M1-Release-Notes)
