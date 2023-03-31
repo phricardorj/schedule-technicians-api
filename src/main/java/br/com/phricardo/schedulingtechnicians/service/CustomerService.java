@@ -11,8 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
+import static java.util.Objects.nonNull;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -51,5 +53,15 @@ public class CustomerService {
         return ResponseEntity
                 .status(OK)
                 .body(customerResponseDTO);
+    }
+
+    public ResponseEntity<Void> deleteCustomerById(Long id) {
+        Optional<Customer> optionalCustomer = repository.findById(id);
+        Customer customer = optionalCustomer.orElse(null);
+        if(nonNull(customer)) {
+            repository.delete(customer);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

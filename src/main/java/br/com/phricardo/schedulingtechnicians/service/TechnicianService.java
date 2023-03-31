@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import static java.util.Objects.nonNull;
 import static org.springframework.http.HttpStatus.*;
 
 @Service
@@ -47,5 +48,14 @@ public class TechnicianService {
         return ResponseEntity
                 .status(OK)
                 .body(technicianResponseDTO);
+    }
+
+    public ResponseEntity<Void> deleteTechnicianByEnrollment(Long enrollment) {
+        Technician technician = repository.findByEnrollment(enrollment);
+        if(nonNull(technician)) {
+            repository.delete(technician);
+            return ResponseEntity.noContent().build();
+        }
+       return ResponseEntity.notFound().build();
     }
 }

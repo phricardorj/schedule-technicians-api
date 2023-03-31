@@ -27,4 +27,9 @@ public class TechnicianController {
     public ResponseEntity<TechnicianResponseDTO> getTechnicianByEnrollment(@PathVariable Long enrollment) {
         return technicianService.getTechnicianByEnrollment(enrollment);
     }
+
+    @DeleteMapping("/{enrollment}")
+    public ResponseEntity<Void> delete(@PathVariable Long enrollment) {
+        return technicianService.deleteTechnicianByEnrollment(enrollment);
+    }
 }

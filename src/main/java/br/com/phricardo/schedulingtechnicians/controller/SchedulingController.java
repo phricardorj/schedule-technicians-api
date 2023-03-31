@@ -27,4 +27,9 @@ public class SchedulingController {
     public ResponseEntity<SchedulingResponseDTO> getSchedulingByServiceOrder(@PathVariable String os) {
         return schedulingService.getSchedulingByServiceOrder(os);
     }
+
+    @DeleteMapping("/{os}")
+    public ResponseEntity<Void> delete(@PathVariable String os) {
+        return schedulingService.deleteSchedulingByServiceOrder(os);
+    }
 }

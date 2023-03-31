@@ -26,4 +26,9 @@ public class CustomerController {
     public ResponseEntity<CustomerResponseDTO> customerById(@PathVariable Long id){
         return customerService.getCustomerById(id);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        return customerService.deleteCustomerById(id);
+    }
 }

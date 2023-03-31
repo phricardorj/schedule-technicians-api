@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import static java.util.Objects.nonNull;
 import static org.springframework.http.HttpStatus.*;
 
 @Service
@@ -47,5 +48,14 @@ public class SchedulingService {
         return ResponseEntity
                 .status(OK)
                 .body(schedulingResponseDTO);
+    }
+
+    public ResponseEntity<Void> deleteSchedulingByServiceOrder(String os) {
+        Scheduling scheduling = repository.findByOs(os);
+        if(nonNull(scheduling)) {
+            repository.delete(scheduling);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
