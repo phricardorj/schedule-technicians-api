@@ -1,12 +1,10 @@
 package br.com.phricardo.schedulingtechnicians.controller;
 
 import br.com.phricardo.schedulingtechnicians.dto.CustomerDTO;
+import br.com.phricardo.schedulingtechnicians.entities.Customer;
 import br.com.phricardo.schedulingtechnicians.service.CustomerService;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/v1/customer")
@@ -21,5 +19,10 @@ public class CustomerController {
     @PostMapping
     public void register(@Valid @RequestBody CustomerDTO customerDTO) {
         customerService.register(customerDTO);
+    }
+
+    @GetMapping("/{id}")
+    public Customer customerById(@PathVariable Long id){
+        return customerService.getCustomerById(id);
     }
 }

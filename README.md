@@ -20,7 +20,7 @@ docker-compose up -d
 # To do
 ```
 /api/v1/customer
-- [❌][GET] Get Customer by Id
+- [✔️][GET] Get Customer by Id
 - [✔️][POST] Register Customer
 - [❌][PATCH] Edit Customer by Id
 - [❌][DELETE] Delete Customer by Id
