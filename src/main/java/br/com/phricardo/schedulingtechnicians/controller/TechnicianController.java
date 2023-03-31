@@ -5,6 +5,7 @@ import br.com.phricardo.schedulingtechnicians.dto.response.TechnicianResponseDTO
 import br.com.phricardo.schedulingtechnicians.entities.Technician;
 import br.com.phricardo.schedulingtechnicians.service.TechnicianService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +19,7 @@ public class TechnicianController {
     }
 
     @PostMapping
-    public TechnicianResponseDTO register(@Valid @RequestBody TechnicianRequestDTO technicianRequestDTO) {
+    public ResponseEntity<TechnicianResponseDTO> register(@Valid @RequestBody TechnicianRequestDTO technicianRequestDTO) {
        return technicianService.register(technicianRequestDTO);
     }
 

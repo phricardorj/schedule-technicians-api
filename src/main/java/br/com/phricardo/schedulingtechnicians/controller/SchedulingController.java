@@ -5,6 +5,7 @@ import br.com.phricardo.schedulingtechnicians.dto.response.SchedulingResponseDTO
 import br.com.phricardo.schedulingtechnicians.entities.Scheduling;
 import br.com.phricardo.schedulingtechnicians.service.SchedulingService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +19,7 @@ public class SchedulingController {
     }
 
     @PostMapping
-    public SchedulingResponseDTO schedule(@Valid @RequestBody SchedulingRequestDTO schedulingRequestDTO) {
+    public ResponseEntity<SchedulingResponseDTO> schedule(@Valid @RequestBody SchedulingRequestDTO schedulingRequestDTO) {
        return schedulingService.register(schedulingRequestDTO);
     }
 
