@@ -18,7 +18,7 @@ public class TechnicianService {
     }
 
     public void register(TechnicianDTO dto) {
-        Technician technician = mapper.technicianDTOtoTechnician(dto);
+        Technician technician = mapper.from(dto);
         repository.save(technician);
     }
 }

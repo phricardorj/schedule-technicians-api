@@ -8,5 +8,5 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface TechnicianMapper {
     @Mapping(source = "address", target = "address")
-    Technician technicianDTOtoTechnician(TechnicianDTO technicianDTO);
+    Technician from(TechnicianDTO technicianDTO);
 }

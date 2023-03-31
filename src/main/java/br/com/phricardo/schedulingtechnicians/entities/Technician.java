@@ -1,10 +1,11 @@
 package br.com.phricardo.schedulingtechnicians.entities;
 
-import br.com.phricardo.schedulingtechnicians.util.EnrollmentGenerator;
+import br.com.phricardo.schedulingtechnicians.util.TechnicianRegistrationUtil;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -33,6 +34,6 @@ public class Technician {
 
     @PrePersist
     private void prePersist() {
-        this.enrollment = EnrollmentGenerator.generate();
+        this.enrollment = TechnicianRegistrationUtil.generate();
     }
 }

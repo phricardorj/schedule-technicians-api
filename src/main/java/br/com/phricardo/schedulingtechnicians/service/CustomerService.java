@@ -6,6 +6,8 @@ import br.com.phricardo.schedulingtechnicians.mapper.CustomerMapper;
 import br.com.phricardo.schedulingtechnicians.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CustomerService {
 
@@ -18,7 +20,12 @@ public class CustomerService {
     }
 
     public void register(CustomerDTO dto) {
-        Customer customer = mapper.customerDTOtoCustomer(dto);
+        Customer customer = mapper.from(dto);
         repository.save(customer);
+    }
+
+    public Customer getCustomerById(Long id) {
+        Optional<Customer> optionalCustomer = repository.findById(id);
+        return optionalCustomer.orElse(new Customer());
     }
 }

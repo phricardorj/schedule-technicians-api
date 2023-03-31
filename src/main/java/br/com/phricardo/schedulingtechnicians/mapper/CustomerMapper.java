@@ -8,5 +8,5 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
     @Mapping(source = "address", target = "address")
-    Customer customerDTOtoCustomer(CustomerDTO customerDTO);
+    Customer from(CustomerDTO customerDTO);
 }
