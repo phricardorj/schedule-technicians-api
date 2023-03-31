@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 public class LocationUtil {
 
     public String buildLocation(String url) {
+        if (url == null) throw new NullPointerException("URL cannot be null");
         return "/api/v1/" + url;
     }
 }
