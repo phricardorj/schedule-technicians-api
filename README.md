@@ -10,6 +10,7 @@ visit at the customer's address. It was developed for Testing what's new in Spri
 - MySQL 8.0 / Flyway
 - Maven
 - [mapstruct](https://mapstruct.org/)
+- [JUnit 5](https://junit.org/junit5/)
 - Docker
 
 ### Before build, run below command:
