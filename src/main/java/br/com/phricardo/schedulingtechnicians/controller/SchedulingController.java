@@ -2,6 +2,8 @@ package br.com.phricardo.schedulingtechnicians.controller;
 
 import br.com.phricardo.schedulingtechnicians.dto.request.SchedulingRequestDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.SchedulingResponseDTO;
+import br.com.phricardo.schedulingtechnicians.dto.update.CustomerUpdateDTO;
+import br.com.phricardo.schedulingtechnicians.dto.update.SchedulingUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.entities.Scheduling;
 import br.com.phricardo.schedulingtechnicians.service.SchedulingService;
 import jakarta.validation.Valid;
@@ -26,6 +28,11 @@ public class SchedulingController {
     @GetMapping("/{os}")
     public ResponseEntity<SchedulingResponseDTO> getSchedulingByServiceOrder(@PathVariable String os) {
         return schedulingService.getSchedulingByServiceOrder(os);
+    }
+
+    @PatchMapping("/{os}")
+    public ResponseEntity<Void> update(@PathVariable String os, @Valid @RequestBody SchedulingUpdateDTO schedulingUpdateDTO) {
+        return schedulingService.update(os, schedulingUpdateDTO);
     }
 
     @DeleteMapping("/{os}")

@@ -2,6 +2,8 @@ package br.com.phricardo.schedulingtechnicians.controller;
 
 import br.com.phricardo.schedulingtechnicians.dto.request.TechnicianRequestDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.TechnicianResponseDTO;
+import br.com.phricardo.schedulingtechnicians.dto.update.CustomerUpdateDTO;
+import br.com.phricardo.schedulingtechnicians.dto.update.TechnicianUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.entities.Technician;
 import br.com.phricardo.schedulingtechnicians.service.TechnicianService;
 import jakarta.validation.Valid;
@@ -26,6 +28,11 @@ public class TechnicianController {
     @GetMapping("/{enrollment}")
     public ResponseEntity<TechnicianResponseDTO> getTechnicianByEnrollment(@PathVariable Long enrollment) {
         return technicianService.getTechnicianByEnrollment(enrollment);
+    }
+
+    @PatchMapping("/{enrollment}")
+    public ResponseEntity<Void> update(@PathVariable Long enrollment, @Valid @RequestBody TechnicianUpdateDTO technicianUpdateDTO) {
+        return technicianService.update(enrollment, technicianUpdateDTO);
     }
 
     @DeleteMapping("/{enrollment}")

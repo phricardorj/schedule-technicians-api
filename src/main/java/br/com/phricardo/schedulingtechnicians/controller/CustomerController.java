@@ -2,6 +2,7 @@ package br.com.phricardo.schedulingtechnicians.controller;
 
 import br.com.phricardo.schedulingtechnicians.dto.request.CustomerRequestDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.CustomerResponseDTO;
+import br.com.phricardo.schedulingtechnicians.dto.update.CustomerUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.service.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,11 @@ public class CustomerController {
     @GetMapping("/{id}")
     public ResponseEntity<CustomerResponseDTO> customerById(@PathVariable Long id){
         return customerService.getCustomerById(id);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody CustomerUpdateDTO customerUpdateDTO) {
+        return customerService.update(id, customerUpdateDTO);
     }
 
     @DeleteMapping("/{id}")

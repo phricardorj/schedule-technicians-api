@@ -4,14 +4,14 @@ import br.com.phricardo.schedulingtechnicians.dto.request.CustomerRequestDTO;
 import br.com.phricardo.schedulingtechnicians.dto.request.mapper.CustomerRequestMapper;
 import br.com.phricardo.schedulingtechnicians.dto.response.CustomerResponseDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.mapper.CustomerResponseMapper;
+import br.com.phricardo.schedulingtechnicians.dto.update.CustomerUpdateDTO;
+import br.com.phricardo.schedulingtechnicians.dto.update.mapper.CustomerUpdateMapper;
 import br.com.phricardo.schedulingtechnicians.entities.Customer;
 import br.com.phricardo.schedulingtechnicians.repository.CustomerRepository;
 import br.com.phricardo.schedulingtechnicians.util.LocationUtil;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Objects.nonNull;
@@ -24,12 +24,14 @@ public class CustomerService {
     private final CustomerRepository repository;
     private final CustomerRequestMapper requestMapper;
     private final CustomerResponseMapper responseMapper;
+    private final CustomerUpdateMapper updateMapper;
     private final LocationUtil locationUtil;
 
-    public CustomerService(CustomerRepository repository, CustomerRequestMapper requestMapper, CustomerResponseMapper responseMapper, LocationUtil locationUtil) {
+    public CustomerService(CustomerRepository repository, CustomerRequestMapper requestMapper, CustomerResponseMapper responseMapper, CustomerUpdateMapper updateMapper, LocationUtil locationUtil) {
         this.repository = repository;
         this.requestMapper = requestMapper;
         this.responseMapper = responseMapper;
+        this.updateMapper = updateMapper;
         this.locationUtil = locationUtil;
     }
 
@@ -56,11 +58,20 @@ public class CustomerService {
     }
 
     public ResponseEntity<Void> deleteCustomerById(Long id) {
-        Optional<Customer> optionalCustomer = repository.findById(id);
-        Customer customer = optionalCustomer.orElse(null);
+        Customer customer = repository.findById(id).orElse(null);
         if(nonNull(customer)) {
             repository.delete(customer);
             return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    public ResponseEntity<Void> update(Long id, CustomerUpdateDTO customerUpdateDTO) {
+        Customer customer = repository.findById(id).orElse(null);
+        if(nonNull(customer)) {
+            updateMapper.updateCustomerFromDTO(customerUpdateDTO, customer);
+            repository.save(customer);
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
     }
