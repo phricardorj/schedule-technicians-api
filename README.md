@@ -26,7 +26,7 @@ docker-compose up -d
 - [❌][DELETE] Delete Customer by Id
 -------------------
 /api/v1/scheduling
-- [❌][GET] Get Scheduling by Service Order (OS)
+- [✔️][GET] Get Scheduling by Service Order (OS)
 - [✔️][POST] Register Scheduling
 - [❌][PATCH] Reschedule Scheduling by Service Order (OS)
 - [❌][DELETE] Cancel Scheduling by Service Order (OS)

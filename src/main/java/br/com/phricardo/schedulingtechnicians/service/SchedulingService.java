@@ -21,4 +21,8 @@ public class SchedulingService {
         Scheduling scheduling = mapper.from(dto);
         repository.save(scheduling);
     }
+
+    public Scheduling getSchedulingByServiceOrder(String os) {
+        return repository.findByOs(os);
+    }
 }
