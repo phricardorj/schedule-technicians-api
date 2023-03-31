@@ -1,6 +1,7 @@
 package br.com.phricardo.schedulingtechnicians.controller;
 
-import br.com.phricardo.schedulingtechnicians.dto.CustomerDTO;
+import br.com.phricardo.schedulingtechnicians.dto.request.CustomerRequestDTO;
+import br.com.phricardo.schedulingtechnicians.dto.response.CustomerResponseDTO;
 import br.com.phricardo.schedulingtechnicians.entities.Customer;
 import br.com.phricardo.schedulingtechnicians.service.CustomerService;
 import jakarta.validation.Valid;
@@ -17,8 +18,8 @@ public class CustomerController {
     }
 
     @PostMapping
-    public void register(@Valid @RequestBody CustomerDTO customerDTO) {
-        customerService.register(customerDTO);
+    public CustomerResponseDTO register(@Valid @RequestBody CustomerRequestDTO customerRequestDTO) {
+        return customerService.register(customerRequestDTO);
     }
 
     @GetMapping("/{id}")

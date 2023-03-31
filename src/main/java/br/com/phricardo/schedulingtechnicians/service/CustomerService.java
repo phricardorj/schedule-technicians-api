@@ -1,8 +1,10 @@
 package br.com.phricardo.schedulingtechnicians.service;
 
-import br.com.phricardo.schedulingtechnicians.dto.CustomerDTO;
+import br.com.phricardo.schedulingtechnicians.dto.request.CustomerRequestDTO;
+import br.com.phricardo.schedulingtechnicians.dto.request.mapper.CustomerRequestMapper;
+import br.com.phricardo.schedulingtechnicians.dto.response.CustomerResponseDTO;
+import br.com.phricardo.schedulingtechnicians.dto.response.mapper.CustomerResponseMapper;
 import br.com.phricardo.schedulingtechnicians.entities.Customer;
-import br.com.phricardo.schedulingtechnicians.mapper.CustomerMapper;
 import br.com.phricardo.schedulingtechnicians.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,20 +14,23 @@ import java.util.Optional;
 public class CustomerService {
 
     private final CustomerRepository repository;
-    private final CustomerMapper mapper;
+    private final CustomerRequestMapper requestMapper;
+    private final CustomerResponseMapper responseMapper;
 
-    public CustomerService(CustomerRepository repository, CustomerMapper mapper) {
+    public CustomerService(CustomerRepository repository, CustomerRequestMapper requestMapper, CustomerResponseMapper responseMapper) {
         this.repository = repository;
-        this.mapper = mapper;
+        this.requestMapper = requestMapper;
+        this.responseMapper = responseMapper;
     }
 
-    public void register(CustomerDTO dto) {
-        Customer customer = mapper.from(dto);
-        repository.save(customer);
+    public CustomerResponseDTO register(CustomerRequestDTO dto) {
+        Customer customer = requestMapper.from(dto);
+        customer = repository.save(customer);
+        return responseMapper.from(customer);
     }
 
     public Customer getCustomerById(Long id) {
         Optional<Customer> optionalCustomer = repository.findById(id);
-        return optionalCustomer.orElse(new Customer());
+        return optionalCustomer.orElse(null);
     }
 }

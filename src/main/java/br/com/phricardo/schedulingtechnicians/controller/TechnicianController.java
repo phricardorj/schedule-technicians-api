@@ -1,6 +1,7 @@
 package br.com.phricardo.schedulingtechnicians.controller;
 
-import br.com.phricardo.schedulingtechnicians.dto.TechnicianDTO;
+import br.com.phricardo.schedulingtechnicians.dto.request.TechnicianRequestDTO;
+import br.com.phricardo.schedulingtechnicians.dto.response.TechnicianResponseDTO;
 import br.com.phricardo.schedulingtechnicians.entities.Technician;
 import br.com.phricardo.schedulingtechnicians.service.TechnicianService;
 import jakarta.validation.Valid;
@@ -17,8 +18,8 @@ public class TechnicianController {
     }
 
     @PostMapping
-    public void register(@Valid @RequestBody TechnicianDTO technicianDTO) {
-        technicianService.register(technicianDTO);
+    public TechnicianResponseDTO register(@Valid @RequestBody TechnicianRequestDTO technicianRequestDTO) {
+       return technicianService.register(technicianRequestDTO);
     }
 
     @GetMapping("/{enrollment}")

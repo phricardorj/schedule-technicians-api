@@ -1,6 +1,7 @@
 package br.com.phricardo.schedulingtechnicians.controller;
 
-import br.com.phricardo.schedulingtechnicians.dto.SchedulingDTO;
+import br.com.phricardo.schedulingtechnicians.dto.request.SchedulingRequestDTO;
+import br.com.phricardo.schedulingtechnicians.dto.response.SchedulingResponseDTO;
 import br.com.phricardo.schedulingtechnicians.entities.Scheduling;
 import br.com.phricardo.schedulingtechnicians.service.SchedulingService;
 import jakarta.validation.Valid;
@@ -17,8 +18,8 @@ public class SchedulingController {
     }
 
     @PostMapping
-    public void schedule(@Valid @RequestBody SchedulingDTO schedulingDTO) {
-        schedulingService.register(schedulingDTO);
+    public SchedulingResponseDTO schedule(@Valid @RequestBody SchedulingRequestDTO schedulingRequestDTO) {
+       return schedulingService.register(schedulingRequestDTO);
     }
 
     @GetMapping("/{os}")

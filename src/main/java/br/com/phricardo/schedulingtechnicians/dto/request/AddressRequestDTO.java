@@ -1,6 +1,5 @@
-package br.com.phricardo.schedulingtechnicians.dto;
+package br.com.phricardo.schedulingtechnicians.dto.request;
 
-import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
@@ -8,7 +7,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressDTO {
+public class AddressRequestDTO {
     @NotBlank
     private String street;
     @NotBlank

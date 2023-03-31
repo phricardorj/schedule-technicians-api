@@ -1,4 +1,4 @@
-package br.com.phricardo.schedulingtechnicians.dto;
+package br.com.phricardo.schedulingtechnicians.dto.request;
 
 import br.com.phricardo.schedulingtechnicians.validation.cpf.CPF;
 import jakarta.validation.Valid;
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TechnicianDTO {
+public class CustomerRequestDTO {
 
     @NotBlank
     private String name;
@@ -27,5 +27,5 @@ public class TechnicianDTO {
     @NotBlank
     private String cellphone;
     @Valid
-    private AddressDTO address;
+    private AddressRequestDTO address;
 }
