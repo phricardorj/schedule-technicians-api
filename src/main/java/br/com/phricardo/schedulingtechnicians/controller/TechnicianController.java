@@ -24,7 +24,7 @@ public class TechnicianController {
     }
 
     @GetMapping("/{enrollment}")
-    public Technician getTechnicianByEnrollment(@PathVariable Long enrollment) {
+    public ResponseEntity<TechnicianResponseDTO> getTechnicianByEnrollment(@PathVariable Long enrollment) {
         return technicianService.getTechnicianByEnrollment(enrollment);
     }
 }

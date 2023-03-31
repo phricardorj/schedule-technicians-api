@@ -24,7 +24,7 @@ public class SchedulingController {
     }
 
     @GetMapping("/{os}")
-    public Scheduling getSchedulingByServiceOrder(@PathVariable String os) {
+    public ResponseEntity<SchedulingResponseDTO> getSchedulingByServiceOrder(@PathVariable String os) {
         return schedulingService.getSchedulingByServiceOrder(os);
     }
 }

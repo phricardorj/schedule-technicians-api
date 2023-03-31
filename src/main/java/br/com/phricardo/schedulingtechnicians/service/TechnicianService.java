@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import static org.springframework.http.HttpStatus.*;
+
 @Service
 public class TechnicianService {
 
@@ -33,12 +35,17 @@ public class TechnicianService {
         String location = locationUtil.buildLocation("technician/" + technician.getEnrollment());
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(CREATED)
                 .header("Location", location)
                 .body(technicianResponseDTO);
     }
 
-    public Technician getTechnicianByEnrollment(Long enrollment) {
-        return repository.findByEnrollment(enrollment);
+    public ResponseEntity<TechnicianResponseDTO> getTechnicianByEnrollment(Long enrollment) {
+        Technician technician = repository.findByEnrollment(enrollment);
+        TechnicianResponseDTO technicianResponseDTO = responseMapper.from(technician);
+
+        return ResponseEntity
+                .status(OK)
+                .body(technicianResponseDTO);
     }
 }

@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import static org.springframework.http.HttpStatus.*;
+
 @Service
 public class SchedulingService {
 
@@ -33,12 +35,17 @@ public class SchedulingService {
         String location = locationUtil.buildLocation("scheduling/" + scheduling.getOs());
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(CREATED)
                 .header("Location", location)
                 .body(schedulingResponseDTO);
     }
 
-    public Scheduling getSchedulingByServiceOrder(String os) {
-        return repository.findByOs(os);
+    public ResponseEntity<SchedulingResponseDTO> getSchedulingByServiceOrder(String os) {
+        Scheduling scheduling = repository.findByOs(os);
+        SchedulingResponseDTO schedulingResponseDTO = responseMapper.from(scheduling);
+
+        return ResponseEntity
+                .status(OK)
+                .body(schedulingResponseDTO);
     }
 }

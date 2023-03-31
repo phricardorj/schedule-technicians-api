@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
+
 @Service
 public class CustomerService {
 
@@ -35,13 +38,18 @@ public class CustomerService {
         String location = locationUtil.buildLocation("customer/" + customer.getId());
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(CREATED)
                 .header("Location", location)
                 .body(customerResponseDTO);
     }
 
-    public Customer getCustomerById(Long id) {
+    public ResponseEntity<CustomerResponseDTO> getCustomerById(Long id) {
         Optional<Customer> optionalCustomer = repository.findById(id);
-        return optionalCustomer.orElse(null);
+        Customer customer = optionalCustomer.orElse(null);
+        CustomerResponseDTO customerResponseDTO = responseMapper.from(customer);
+
+        return ResponseEntity
+                .status(OK)
+                .body(customerResponseDTO);
     }
 }
