@@ -32,7 +32,7 @@ docker-compose up -d
 - [❌][DELETE] Cancel Scheduling by Service Order (OS)
 -------------------
 /api/v1/technician
-- [❌][GET] Get Technician via Enrollment
+- [✔️][GET] Get Technician by Enrollment
 - [✔️][POST] Register Technician
 - [❌][PATCH] Edit Technician by Enrollment
 - [❌][DELETE] Delete Customer via Enrollment
