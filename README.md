@@ -13,7 +13,7 @@ visit at the customer's address.
 - [JUnit 5](https://junit.org/junit5/)
 - Docker
 
-### Before build, run below command:
+### Development
 ````shell
 docker-compose up -d
 ````
