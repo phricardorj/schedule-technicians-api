@@ -27,7 +27,7 @@ public class Technician {
     private String email;
     private String phone;
     private String cellphone;
-    private Integer enrollment;
+    private Long enrollment;
 
     @Embedded
     private Address address;

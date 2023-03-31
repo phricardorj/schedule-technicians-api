@@ -1,0 +1,2 @@
+ALTER TABLE technicians
+ADD COLUMN enrollment INT(11) NOT NULL DEFAULT 0;

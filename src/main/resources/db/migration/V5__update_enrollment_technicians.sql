@@ -1,0 +1,2 @@
+ALTER TABLE technicians
+MODIFY COLUMN enrollment BIGINT(20) NOT NULL DEFAULT 0;

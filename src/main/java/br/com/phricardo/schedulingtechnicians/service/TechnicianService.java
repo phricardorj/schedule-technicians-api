@@ -21,4 +21,8 @@ public class TechnicianService {
         Technician technician = mapper.from(dto);
         repository.save(technician);
     }
+
+    public Technician getTechnicianByEnrollment(Long enrollment) {
+        return repository.findByEnrollment(enrollment);
+    }
 }

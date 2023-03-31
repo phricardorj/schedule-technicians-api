@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class TechnicianRegistrationUtil {
 
-    public static Integer generate() {
-      return 10000 + new Random().nextInt(90000);
+    public static Long generate() {
+      return 10000L + new Random().nextInt(90000);
     }
 }
