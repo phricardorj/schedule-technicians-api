@@ -4,4 +4,5 @@ spring:
     url: jdbc:mysql://localhost:3306/scheduling_db
     username: admin
     password: admin
-
+  banner:
+    location: classpath:stapi_logo_ascii.txt
