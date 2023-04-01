@@ -20,6 +20,18 @@ docker-compose up -d
 
 # To do
 ```
+/api/v1/company
+- [✔️][GET] Get Company by Id
+- [✔️][POST] Register Company
+- [✔️][PATCH] Edit Company by Id
+- [✔️][DELETE] Delete Company by Id
+-------------------
+/api/v1/technician
+- [✔️][GET] Get Technician by Enrollment
+- [✔️][POST] Register Technician
+- [✔️][PATCH] Edit Technician by Enrollment
+- [✔️][DELETE] Delete Customer via Enrollment
+-------------------
 /api/v1/customer
 - [✔️][GET] Get Customer by Id
 - [✔️][POST] Register Customer
@@ -31,12 +43,6 @@ docker-compose up -d
 - [✔️][POST] Register Scheduling
 - [✔️][PATCH] Reschedule Scheduling by Service Order (OS)
 - [✔️][DELETE] Cancel Scheduling by Service Order (OS)
--------------------
-/api/v1/technician
-- [✔️][GET] Get Technician by Enrollment
-- [✔️][POST] Register Technician
-- [✔️][PATCH] Edit Technician by Enrollment
-- [✔️][DELETE] Delete Customer via Enrollment
 ```
 
 ### [PT-BR] Substituições do Spring Boot 2.x
