@@ -11,6 +11,7 @@ visit at the customer's address.
 - Maven
 - [mapstruct](https://mapstruct.org/)
 - [JUnit 5](https://junit.org/junit5/)
+- [SpringDoc OpenAPI 3](https://springdoc.org/) and Swagger UI 
 - Docker
 
 ### Development
