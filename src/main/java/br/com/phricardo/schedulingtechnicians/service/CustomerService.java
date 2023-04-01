@@ -48,13 +48,14 @@ public class CustomerService {
     }
 
     public ResponseEntity<CustomerResponseDTO> getCustomerById(Long id) {
-        Optional<Customer> optionalCustomer = repository.findById(id);
-        Customer customer = optionalCustomer.orElse(null);
-        CustomerResponseDTO customerResponseDTO = responseMapper.from(customer);
-
-        return ResponseEntity
-                .status(OK)
-                .body(customerResponseDTO);
+        Customer customer = repository.findById(id).orElse(null);
+        if(nonNull(customer)) {
+            CustomerResponseDTO customerResponseDTO = responseMapper.from(customer);
+            return ResponseEntity
+                    .status(OK)
+                    .body(customerResponseDTO);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     public ResponseEntity<Void> deleteCustomerById(Long id) {

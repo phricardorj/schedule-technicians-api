@@ -45,10 +45,13 @@ public class TechnicianService {
 
     public ResponseEntity<TechnicianResponseDTO> getTechnicianByEnrollment(Long enrollment) {
         Technician technician = repository.findByEnrollment(enrollment);
-        TechnicianResponseDTO technicianResponseDTO = responseMapper.from(technician);
-        return ResponseEntity
-                .status(OK)
-                .body(technicianResponseDTO);
+        if(nonNull(technician)) {
+            TechnicianResponseDTO technicianResponseDTO = responseMapper.from(technician);
+            return ResponseEntity
+                    .status(OK)
+                    .body(technicianResponseDTO);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     public ResponseEntity<Void> deleteTechnicianByEnrollment(Long enrollment) {

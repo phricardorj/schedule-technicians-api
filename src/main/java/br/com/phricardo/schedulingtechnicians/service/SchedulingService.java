@@ -46,11 +46,13 @@ public class SchedulingService {
 
     public ResponseEntity<SchedulingResponseDTO> getSchedulingByServiceOrder(String os) {
         Scheduling scheduling = repository.findByOs(os);
-        SchedulingResponseDTO schedulingResponseDTO = responseMapper.from(scheduling);
-
-        return ResponseEntity
-                .status(OK)
-                .body(schedulingResponseDTO);
+        if(nonNull(scheduling)) {
+            SchedulingResponseDTO schedulingResponseDTO = responseMapper.from(scheduling);
+            return ResponseEntity
+                    .status(OK)
+                    .body(schedulingResponseDTO);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     public ResponseEntity<Void> deleteSchedulingByServiceOrder(String os) {
