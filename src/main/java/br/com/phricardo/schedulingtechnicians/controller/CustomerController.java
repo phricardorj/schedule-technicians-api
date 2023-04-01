@@ -4,12 +4,14 @@ import br.com.phricardo.schedulingtechnicians.dto.request.CustomerRequestDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.CustomerResponseDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.CustomerUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.service.CustomerService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/v1/customer")
+@Tag(name = "Customer", description = "Endpoints for managing customer information")
 public class CustomerController {
 
     private final CustomerService customerService;

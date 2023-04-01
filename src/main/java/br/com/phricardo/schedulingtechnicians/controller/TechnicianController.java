@@ -6,12 +6,14 @@ import br.com.phricardo.schedulingtechnicians.dto.update.CustomerUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.TechnicianUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.entities.Technician;
 import br.com.phricardo.schedulingtechnicians.service.TechnicianService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/v1/technician")
+@Tag(name = "Technician", description = "Endpoints to manage technician information")
 public class TechnicianController {
 
     private final TechnicianService technicianService;

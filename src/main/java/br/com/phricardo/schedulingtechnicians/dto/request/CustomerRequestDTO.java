@@ -1,6 +1,7 @@
 package br.com.phricardo.schedulingtechnicians.dto.request;
 
 import br.com.phricardo.schedulingtechnicians.validation.cpf.CPF;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(title = "Customer Request")
 public class CustomerRequestDTO {
 
     @NotBlank
