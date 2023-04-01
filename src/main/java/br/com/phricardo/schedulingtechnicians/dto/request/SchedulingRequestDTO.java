@@ -15,8 +15,12 @@ import java.time.LocalDateTime;
 @Schema(title = "Scheduling Request")
 public class SchedulingRequestDTO {
 
-    @NotNull @Future
-    private LocalDateTime date;
     @NotNull
+    @Future
+    @Schema(description = "Appointment date and time", example = "2023-04-01T10:00:00")
+    private LocalDateTime date;
+
+    @NotNull
+    @Schema(description = "Customer Id", example = "123")
     private Long customerId;
 }

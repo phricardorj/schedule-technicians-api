@@ -13,7 +13,10 @@ import java.time.LocalDateTime;
 @Schema(title = "Scheduling Response")
 public class SchedulingResponseDTO {
 
+    @Schema(description = "Service Order", example = "2023033186698")
     private String os;
+    @Schema(description = "Appointment date and time", example = "2023-04-01T10:00:00")
     private LocalDateTime date;
+    @Schema(description = "Customer Id", example = "123")
     private Long customerId;
 }

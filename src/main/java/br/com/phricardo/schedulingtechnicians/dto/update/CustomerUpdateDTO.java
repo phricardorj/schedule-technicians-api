@@ -11,8 +11,12 @@ import lombok.NoArgsConstructor;
 @Schema(title = "Customer Update Request")
 public class CustomerUpdateDTO {
 
+    @Schema(description = "Email", example = "pedro.ricardo@example.com")
     private String email;
+    @Schema(description = "Phone", example = "+55 (11) 3765-4321")
     private String phone;
+    @Schema(description = "Cellphone", example = "+55 (11) 93765-4321")
     private String cellphone;
+    @Schema(description = "Address")
     private AddressUpdateDTO address;
 }
