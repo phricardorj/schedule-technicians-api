@@ -12,7 +12,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Address {
-    private String street;
+
+    private String address;
+    private Integer addressNumber;
+    private String complement;
     private String neighborhood;
     private String city;
     private String state;

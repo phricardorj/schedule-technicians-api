@@ -11,9 +11,14 @@ import lombok.NoArgsConstructor;
 @Schema(title = "Address Response")
 public class AddressResponseDTO {
 
-    @Schema(description = "Public place", example = "Avenida Paulista")
-    private String street;
-    @Schema(description = "District", example = "Bela Vista")
+
+    @Schema(description = "Address", example = "Avenida Paulista")
+    private String address;
+    @Schema(description = "Address number", example = "207")
+    private Integer number;
+    @Schema(description = "Address complement", example = "Apartment 104")
+    private String complement;
+    @Schema(description = "Neighborhood", example = "Bela Vista")
     private String neighborhood;
     @Schema(description = "City", example = "São Paulo")
     private String city;

@@ -5,7 +5,7 @@ import br.com.phricardo.schedulingtechnicians.entities.Technician;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = AddressUpdateMapper.class)
 public interface TechnicianUpdateMapper {
 
     void updateTechnicianFromDTO(TechnicianUpdateDTO technicianUpdateDTO, @MappingTarget Technician technician);

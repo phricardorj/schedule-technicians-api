@@ -5,7 +5,7 @@ import br.com.phricardo.schedulingtechnicians.entities.Customer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = AddressResponseMapper.class)
 public interface CustomerResponseMapper {
     @Mapping(source = "id", target = "customerId")
     @Mapping(source = "address", target = "address")
