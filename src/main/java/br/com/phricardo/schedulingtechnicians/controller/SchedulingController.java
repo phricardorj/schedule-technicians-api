@@ -23,7 +23,7 @@ public class SchedulingController {
     }
 
     @PostMapping
-    public ResponseEntity<SchedulingResponseDTO> schedule(@Valid @RequestBody SchedulingRequestDTO schedulingRequestDTO) {
+    public ResponseEntity<?> schedule(@Valid @RequestBody SchedulingRequestDTO schedulingRequestDTO) {
        return schedulingService.register(schedulingRequestDTO);
     }
 

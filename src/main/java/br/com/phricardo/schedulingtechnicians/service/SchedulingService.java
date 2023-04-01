@@ -6,7 +6,9 @@ import br.com.phricardo.schedulingtechnicians.dto.response.SchedulingResponseDTO
 import br.com.phricardo.schedulingtechnicians.dto.response.mapper.SchedulingResponseMapper;
 import br.com.phricardo.schedulingtechnicians.dto.update.SchedulingUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.mapper.SchedulingUpdateMapper;
+import br.com.phricardo.schedulingtechnicians.entities.Customer;
 import br.com.phricardo.schedulingtechnicians.entities.Scheduling;
+import br.com.phricardo.schedulingtechnicians.repository.CustomerRepository;
 import br.com.phricardo.schedulingtechnicians.repository.SchedulingRepository;
 import br.com.phricardo.schedulingtechnicians.util.LocationUtil;
 import org.springframework.http.ResponseEntity;
@@ -22,26 +24,32 @@ public class SchedulingService {
     private final SchedulingRequestMapper requestMapper;
     private final SchedulingResponseMapper responseMapper;
     private final SchedulingUpdateMapper updateMapper;
+    private final CustomerRepository customerRepository;
     private final LocationUtil locationUtil;
 
-    public SchedulingService(SchedulingRepository repository, SchedulingRequestMapper requestMapper, SchedulingResponseMapper responseMapper, SchedulingUpdateMapper updateMapper, LocationUtil locationUtil) {
+    public SchedulingService(SchedulingRepository repository, SchedulingRequestMapper requestMapper, SchedulingResponseMapper responseMapper, SchedulingUpdateMapper updateMapper, CustomerRepository customerRepository, LocationUtil locationUtil) {
         this.repository = repository;
         this.requestMapper = requestMapper;
         this.responseMapper = responseMapper;
         this.updateMapper = updateMapper;
+        this.customerRepository = customerRepository;
         this.locationUtil = locationUtil;
     }
 
-    public ResponseEntity<SchedulingResponseDTO> register(SchedulingRequestDTO dto) {
-        Scheduling scheduling = requestMapper.from(dto);
-        scheduling = repository.save(scheduling);
-        SchedulingResponseDTO schedulingResponseDTO = responseMapper.from(scheduling);
-        String location = locationUtil.buildLocation("scheduling/" + scheduling.getOs());
+    public ResponseEntity<?> register(SchedulingRequestDTO dto) {
+        Customer customer = customerRepository.findById(dto.getCustomerId()).orElse(null);
+        if(nonNull(customer)) {
+            Scheduling scheduling = requestMapper.from(dto);
+            scheduling = repository.save(scheduling);
+            SchedulingResponseDTO schedulingResponseDTO = responseMapper.from(scheduling);
+            String location = locationUtil.buildLocation("scheduling/" + scheduling.getOs());
 
-        return ResponseEntity
-                .status(CREATED)
-                .header("Location", location)
-                .body(schedulingResponseDTO);
+            return ResponseEntity
+                    .status(CREATED)
+                    .header("Location", location)
+                    .body(schedulingResponseDTO);
+        }
+        return ResponseEntity.status(NOT_FOUND).body("customer id not found");
     }
 
     public ResponseEntity<SchedulingResponseDTO> getSchedulingByServiceOrder(String os) {
