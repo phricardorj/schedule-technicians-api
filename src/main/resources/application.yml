@@ -6,3 +6,8 @@ spring:
     password: admin
   banner:
     location: classpath:stapi_logo_ascii.txt
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
