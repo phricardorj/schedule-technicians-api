@@ -85,7 +85,10 @@ public class SchedulingService {
         if(nonNull(scheduling)) {
             updateMapper.updateSchedulingFromDTO(schedulingUpdateDTO, scheduling);
             repository.save(scheduling);
-            return ResponseEntity.ok().build();
+            return ResponseEntity
+                    .status(OK)
+                    .header("Location", locationService.buildLocation("scheduling/" + scheduling.getOs()))
+                    .build();
         }
         return ResponseEntity.notFound().build();
     }

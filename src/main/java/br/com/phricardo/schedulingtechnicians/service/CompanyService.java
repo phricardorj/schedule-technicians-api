@@ -78,7 +78,10 @@ public class CompanyService {
         if(nonNull(company)) {
             updateMapper.updateCompanyFromDTO(companyUpdateDTO, company);
             repository.save(company);
-            return ResponseEntity.ok().build();
+            return ResponseEntity
+                    .status(OK)
+                    .header("Location", locationService.buildLocation("company/" + company.getId()))
+                    .build();
         }
         return ResponseEntity.notFound().build();
     }

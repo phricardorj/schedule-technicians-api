@@ -78,7 +78,10 @@ public class CustomerService {
         if(nonNull(customer)) {
             updateMapper.updateCustomerFromDTO(customerUpdateDTO, customer);
             repository.save(customer);
-            return ResponseEntity.ok().build();
+            return ResponseEntity
+                    .status(OK)
+                    .header("Location", locationService.buildLocation("customer/" + customer.getId()))
+                    .build();
         }
         return ResponseEntity.notFound().build();
     }

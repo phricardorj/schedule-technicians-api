@@ -77,7 +77,10 @@ public class TechnicianService {
         if(nonNull(technician)) {
             updateMapper.updateTechnicianFromDTO(technicianUpdateDTO, technician);
             repository.save(technician);
-            return ResponseEntity.ok().build();
+            return ResponseEntity
+                    .status(OK)
+                    .header("Location", locationService.buildLocation("technician/" + technician.getEnrollment()))
+                    .build();
         }
         return ResponseEntity.notFound().build();
     }
