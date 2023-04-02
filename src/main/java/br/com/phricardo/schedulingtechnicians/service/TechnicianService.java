@@ -52,7 +52,7 @@ public class TechnicianService {
     }
 
     public ResponseEntity<TechnicianResponseDTO> getTechnicianByEnrollment(Long enrollment) {
-        Technician technician = repository.findByEnrollment(enrollment);
+        Technician technician = repository.findByEnrollment(enrollment).orElse(null);
         if(nonNull(technician)) {
             TechnicianResponseDTO technicianResponseDTO = responseMapper.from(technician);
             return ResponseEntity
@@ -64,7 +64,7 @@ public class TechnicianService {
 
     @Transactional
     public ResponseEntity<Void> deleteTechnicianByEnrollment(Long enrollment) {
-        Technician technician = repository.findByEnrollment(enrollment);
+        Technician technician = repository.findByEnrollment(enrollment).orElse(null);
         if(nonNull(technician)) {
             repository.delete(technician);
             return ResponseEntity.noContent().build();
@@ -74,7 +74,7 @@ public class TechnicianService {
 
     @Transactional
     public ResponseEntity<Void> update(Long enrollment, TechnicianUpdateDTO technicianUpdateDTO) {
-        Technician technician = repository.findByEnrollment(enrollment);
+        Technician technician = repository.findByEnrollment(enrollment).orElse(null);
         if(nonNull(technician)) {
             updateMapper.updateTechnicianFromDTO(technicianUpdateDTO, technician);
             repository.save(technician);

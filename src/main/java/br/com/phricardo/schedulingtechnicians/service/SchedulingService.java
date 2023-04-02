@@ -60,7 +60,7 @@ public class SchedulingService {
     }
 
     public ResponseEntity<SchedulingResponseDTO> getSchedulingByServiceOrder(String os) {
-        Scheduling scheduling = repository.findByOs(os);
+        Scheduling scheduling = repository.findByOs(os).orElse(null);
         if(nonNull(scheduling)) {
             SchedulingResponseDTO schedulingResponseDTO = responseMapper.from(scheduling);
             return ResponseEntity
@@ -72,7 +72,7 @@ public class SchedulingService {
 
     @Transactional
     public ResponseEntity<Void> deleteSchedulingByServiceOrder(String os) {
-        Scheduling scheduling = repository.findByOs(os);
+        Scheduling scheduling = repository.findByOs(os).orElse(null);
         if(nonNull(scheduling)) {
             repository.delete(scheduling);
             return ResponseEntity.noContent().build();
@@ -82,7 +82,7 @@ public class SchedulingService {
 
     @Transactional
     public ResponseEntity<Void> update(String os, SchedulingUpdateDTO schedulingUpdateDTO) {
-        Scheduling scheduling = repository.findByOs(os);
+        Scheduling scheduling = repository.findByOs(os).orElse(null);
         if(nonNull(scheduling)) {
             updateMapper.updateSchedulingFromDTO(schedulingUpdateDTO, scheduling);
             repository.save(scheduling);
