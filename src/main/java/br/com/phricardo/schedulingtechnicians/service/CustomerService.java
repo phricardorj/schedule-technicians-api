@@ -10,10 +10,9 @@ import br.com.phricardo.schedulingtechnicians.entities.Customer;
 import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.CustomerRepository;
 import br.com.phricardo.schedulingtechnicians.util.LocationUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 import static org.springframework.http.HttpStatus.*;
@@ -36,6 +35,7 @@ public class CustomerService {
         this.locationUtil = locationUtil;
     }
 
+    @Transactional
     public ResponseEntity<CustomerResponseDTO> register(CustomerRequestDTO dto) throws RegistrationException {
         Customer customer = requestMapper.from(dto);
         Customer savedCustomer = repository.save(customer);
@@ -63,6 +63,7 @@ public class CustomerService {
         return ResponseEntity.notFound().build();
     }
 
+    @Transactional
     public ResponseEntity<Void> deleteCustomerById(Long id) {
         Customer customer = repository.findById(id).orElse(null);
         if(nonNull(customer)) {
@@ -72,6 +73,7 @@ public class CustomerService {
         return ResponseEntity.notFound().build();
     }
 
+    @Transactional
     public ResponseEntity<Void> update(Long id, CustomerUpdateDTO customerUpdateDTO) {
         Customer customer = repository.findById(id).orElse(null);
         if(nonNull(customer)) {

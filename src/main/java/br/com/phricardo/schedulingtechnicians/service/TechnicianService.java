@@ -10,6 +10,7 @@ import br.com.phricardo.schedulingtechnicians.entities.Technician;
 import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.TechnicianRepository;
 import br.com.phricardo.schedulingtechnicians.util.LocationUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,7 @@ public class TechnicianService {
         this.locationUtil = locationUtil;
     }
 
+    @Transactional
     public ResponseEntity<TechnicianResponseDTO> register(TechnicianRequestDTO dto) throws RegistrationException {
         Technician technician = requestMapper.from(dto);
         Technician savedTechnician = repository.save(technician);
@@ -60,6 +62,7 @@ public class TechnicianService {
         return ResponseEntity.notFound().build();
     }
 
+    @Transactional
     public ResponseEntity<Void> deleteTechnicianByEnrollment(Long enrollment) {
         Technician technician = repository.findByEnrollment(enrollment);
         if(nonNull(technician)) {
@@ -69,6 +72,7 @@ public class TechnicianService {
        return ResponseEntity.notFound().build();
     }
 
+    @Transactional
     public ResponseEntity<Void> update(Long enrollment, TechnicianUpdateDTO technicianUpdateDTO) {
         Technician technician = repository.findByEnrollment(enrollment);
         if(nonNull(technician)) {

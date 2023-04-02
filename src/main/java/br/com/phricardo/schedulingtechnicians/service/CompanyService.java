@@ -10,6 +10,7 @@ import br.com.phricardo.schedulingtechnicians.entities.Company;
 import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.CompanyRepository;
 import br.com.phricardo.schedulingtechnicians.util.LocationUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,7 @@ public class CompanyService {
         this.locationUtil = locationUtil;
     }
 
+    @Transactional
     public ResponseEntity<CompanyResponseDTO> register(CompanyRequestDTO dto) throws RegistrationException {
         Company company = requestMapper.from(dto);
         Company savedCompany = repository.save(company);
@@ -62,7 +64,7 @@ public class CompanyService {
         }
         return ResponseEntity.notFound().build();
     }
-
+    @Transactional
     public ResponseEntity<Void> deleteCompanyById(Long id) {
         Company company = repository.findById(id).orElse(null);
         if(nonNull(company)) {
@@ -71,7 +73,7 @@ public class CompanyService {
         }
         return ResponseEntity.notFound().build();
     }
-
+    @Transactional
     public ResponseEntity<Void> update(Long id, CompanyUpdateDTO companyUpdateDTO) {
         Company company = repository.findById(id).orElse(null);
         if(nonNull(company)) {

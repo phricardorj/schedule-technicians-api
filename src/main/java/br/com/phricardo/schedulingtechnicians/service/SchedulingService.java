@@ -12,6 +12,7 @@ import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.CustomerRepository;
 import br.com.phricardo.schedulingtechnicians.repository.SchedulingRepository;
 import br.com.phricardo.schedulingtechnicians.util.LocationUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,7 @@ public class SchedulingService {
         this.locationUtil = locationUtil;
     }
 
+    @Transactional
     public ResponseEntity<?> register(SchedulingRequestDTO dto) throws RegistrationException {
         Customer customer = customerRepository.findById(dto.getCustomerId()).orElse(null);
         if(nonNull(customer)) {
@@ -68,6 +70,7 @@ public class SchedulingService {
         return ResponseEntity.notFound().build();
     }
 
+    @Transactional
     public ResponseEntity<Void> deleteSchedulingByServiceOrder(String os) {
         Scheduling scheduling = repository.findByOs(os);
         if(nonNull(scheduling)) {
@@ -77,6 +80,7 @@ public class SchedulingService {
         return ResponseEntity.notFound().build();
     }
 
+    @Transactional
     public ResponseEntity<Void> update(String os, SchedulingUpdateDTO schedulingUpdateDTO) {
         Scheduling scheduling = repository.findByOs(os);
         if(nonNull(scheduling)) {
