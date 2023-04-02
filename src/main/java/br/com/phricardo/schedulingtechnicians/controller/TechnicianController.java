@@ -32,7 +32,7 @@ public class TechnicianController {
         return technicianService.getTechnicianByEnrollment(enrollment);
     }
 
-    @PatchMapping("/{enrollment}")
+    @PutMapping("/{enrollment}")
     public ResponseEntity<Void> update(@PathVariable Long enrollment, @Valid @RequestBody TechnicianUpdateDTO technicianUpdateDTO) {
         return technicianService.update(enrollment, technicianUpdateDTO);
     }

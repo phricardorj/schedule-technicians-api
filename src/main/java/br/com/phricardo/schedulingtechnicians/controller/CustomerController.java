@@ -30,7 +30,7 @@ public class CustomerController {
         return customerService.getCustomerById(id);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody CustomerUpdateDTO customerUpdateDTO) {
         return customerService.update(id, customerUpdateDTO);
     }

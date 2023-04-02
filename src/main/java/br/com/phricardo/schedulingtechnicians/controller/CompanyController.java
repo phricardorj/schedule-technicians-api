@@ -34,7 +34,7 @@ public class CompanyController {
         return companyService.getCompanyById(id);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody CompanyUpdateDTO companyUpdateDTO) {
         return companyService.update(id, companyUpdateDTO);
     }

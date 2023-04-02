@@ -32,7 +32,7 @@ public class SchedulingController {
         return schedulingService.getSchedulingByServiceOrder(os);
     }
 
-    @PatchMapping("/{os}")
+    @PutMapping("/{os}")
     public ResponseEntity<Void> update(@PathVariable String os, @Valid @RequestBody SchedulingUpdateDTO schedulingUpdateDTO) {
         return schedulingService.update(os, schedulingUpdateDTO);
     }
