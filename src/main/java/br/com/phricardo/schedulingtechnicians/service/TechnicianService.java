@@ -7,6 +7,7 @@ import br.com.phricardo.schedulingtechnicians.dto.response.mapper.TechnicianResp
 import br.com.phricardo.schedulingtechnicians.dto.update.TechnicianUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.mapper.TechnicianUpdateMapper;
 import br.com.phricardo.schedulingtechnicians.entities.Technician;
+import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.TechnicianRepository;
 import br.com.phricardo.schedulingtechnicians.util.LocationUtil;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +33,16 @@ public class TechnicianService {
         this.locationUtil = locationUtil;
     }
 
-    public ResponseEntity<TechnicianResponseDTO> register(TechnicianRequestDTO dto) {
+    public ResponseEntity<TechnicianResponseDTO> register(TechnicianRequestDTO dto) throws RegistrationException {
         Technician technician = requestMapper.from(dto);
-        technician = repository.save(technician);
-        TechnicianResponseDTO technicianResponseDTO = responseMapper.from(technician);
+        Technician savedTechnician = repository.save(technician);
+
+        if(savedTechnician.getId() == null)
+            throw new RegistrationException("Unable to register the company. An internal error occurred in the API.");
+
+        TechnicianResponseDTO technicianResponseDTO = responseMapper.from(savedTechnician);
         String location = locationUtil.buildLocation("technician/" + technician.getEnrollment());
+
         return ResponseEntity
                 .status(CREATED)
                 .header("Location", location)

@@ -8,6 +8,7 @@ import br.com.phricardo.schedulingtechnicians.dto.update.SchedulingUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.mapper.SchedulingUpdateMapper;
 import br.com.phricardo.schedulingtechnicians.entities.Customer;
 import br.com.phricardo.schedulingtechnicians.entities.Scheduling;
+import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.CustomerRepository;
 import br.com.phricardo.schedulingtechnicians.repository.SchedulingRepository;
 import br.com.phricardo.schedulingtechnicians.util.LocationUtil;
@@ -36,12 +37,16 @@ public class SchedulingService {
         this.locationUtil = locationUtil;
     }
 
-    public ResponseEntity<?> register(SchedulingRequestDTO dto) {
+    public ResponseEntity<?> register(SchedulingRequestDTO dto) throws RegistrationException {
         Customer customer = customerRepository.findById(dto.getCustomerId()).orElse(null);
         if(nonNull(customer)) {
             Scheduling scheduling = requestMapper.from(dto);
-            scheduling = repository.save(scheduling);
-            SchedulingResponseDTO schedulingResponseDTO = responseMapper.from(scheduling);
+            Scheduling savedScheduling = repository.save(scheduling);
+
+            if(savedScheduling.getId() == null)
+                throw new RegistrationException("Unable to register the scheduling. An internal error occurred in the API.");
+
+            SchedulingResponseDTO schedulingResponseDTO = responseMapper.from(savedScheduling);
             String location = locationUtil.buildLocation("scheduling/" + scheduling.getOs());
 
             return ResponseEntity

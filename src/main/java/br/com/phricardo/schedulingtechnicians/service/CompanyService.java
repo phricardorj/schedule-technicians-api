@@ -7,13 +7,14 @@ import br.com.phricardo.schedulingtechnicians.dto.response.mapper.CompanyRespons
 import br.com.phricardo.schedulingtechnicians.dto.update.CompanyUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.mapper.CompanyUpdateMapper;
 import br.com.phricardo.schedulingtechnicians.entities.Company;
+import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.CompanyRepository;
 import br.com.phricardo.schedulingtechnicians.util.LocationUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import static java.util.Objects.nonNull;
-import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @Service
@@ -33,14 +34,18 @@ public class CompanyService {
         this.locationUtil = locationUtil;
     }
 
-    public ResponseEntity<CompanyResponseDTO> register(CompanyRequestDTO dto) {
+    public ResponseEntity<CompanyResponseDTO> register(CompanyRequestDTO dto) throws RegistrationException {
         Company company = requestMapper.from(dto);
-        company = repository.save(company);
-        CompanyResponseDTO companyResponseDTO = responseMapper.from(company);
-        String location = locationUtil.buildLocation("customer/" + company.getId());
+        Company savedCompany = repository.save(company);
+
+        if (savedCompany.getId() == null)
+            throw new RegistrationException("Unable to register the company. An internal error occurred in the API.");
+
+        CompanyResponseDTO companyResponseDTO = responseMapper.from(savedCompany);
+        String location = locationUtil.buildLocation("customer/" + savedCompany.getId());
 
         return ResponseEntity
-                .status(CREATED)
+                .status(HttpStatus.CREATED)
                 .header("Location", location)
                 .body(companyResponseDTO);
     }
