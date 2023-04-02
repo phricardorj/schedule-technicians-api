@@ -9,7 +9,6 @@ import br.com.phricardo.schedulingtechnicians.dto.update.mapper.CompanyUpdateMap
 import br.com.phricardo.schedulingtechnicians.entities.Company;
 import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.CompanyRepository;
-import br.com.phricardo.schedulingtechnicians.util.LocationUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,14 +26,14 @@ public class CompanyService {
     private final CompanyRequestMapper requestMapper;
     private final CompanyResponseMapper responseMapper;
     private final CompanyUpdateMapper updateMapper;
-    private final LocationUtil locationUtil;
+    private final LocationService locationService;
 
-    public CompanyService(CompanyRepository repository, CompanyRequestMapper requestMapper, CompanyResponseMapper responseMapper, CompanyUpdateMapper updateMapper, LocationUtil locationUtil) {
+    public CompanyService(CompanyRepository repository, CompanyRequestMapper requestMapper, CompanyResponseMapper responseMapper, CompanyUpdateMapper updateMapper, LocationService locationService) {
         this.repository = repository;
         this.requestMapper = requestMapper;
         this.responseMapper = responseMapper;
         this.updateMapper = updateMapper;
-        this.locationUtil = locationUtil;
+        this.locationService = locationService;
     }
 
     @Transactional
@@ -46,7 +45,7 @@ public class CompanyService {
             throw new RegistrationException("Unable to register the company. An internal error occurred in the API.");
 
         CompanyResponseDTO companyResponseDTO = responseMapper.from(savedCompany);
-        String location = locationUtil.buildLocation("customer/" + savedCompany.getId());
+        String location = locationService.buildLocation("company/" + savedCompany.getId());
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

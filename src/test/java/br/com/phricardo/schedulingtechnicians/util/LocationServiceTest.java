@@ -1,34 +1,35 @@
 package br.com.phricardo.schedulingtechnicians.util;
 
+import br.com.phricardo.schedulingtechnicians.service.LocationService;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LocationUtilTest {
+class LocationServiceTest {
 
     @Test
     public void buildLocation_simpleUrl() {
-        LocationUtil locationUtil = new LocationUtil();
+        LocationService locationService = new LocationService();
         String url = "customers";
         String expectedLocation = "/api/v1/customers";
-        String actualLocation = locationUtil.buildLocation(url);
+        String actualLocation = locationService.buildLocation(url);
         assertEquals(expectedLocation, actualLocation);
     }
 
     @Test
     public void buildLocation_urlWithMultipleLevels() {
-        LocationUtil locationUtil = new LocationUtil();
+        LocationService locationService = new LocationService();
         String url = "customers/1234/schedules/5678";
         String expectedLocation = "/api/v1/customers/1234/schedules/5678";
-        String actualLocation = locationUtil.buildLocation(url);
+        String actualLocation = locationService.buildLocation(url);
         assertEquals(expectedLocation, actualLocation);
     }
 
     @Test
     public void buildLocation_withNullUrl_shouldThrowException() {
-        LocationUtil locationUtil = new LocationUtil();
+        LocationService locationService = new LocationService();
         String url = null;
-        assertThrows(NullPointerException.class, () -> locationUtil.buildLocation(url));
+        assertThrows(NullPointerException.class, () -> locationService.buildLocation(url));
     }
 
 }

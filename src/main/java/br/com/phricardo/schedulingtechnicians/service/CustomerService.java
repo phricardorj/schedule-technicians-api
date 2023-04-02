@@ -9,7 +9,6 @@ import br.com.phricardo.schedulingtechnicians.dto.update.mapper.CustomerUpdateMa
 import br.com.phricardo.schedulingtechnicians.entities.Customer;
 import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.CustomerRepository;
-import br.com.phricardo.schedulingtechnicians.util.LocationUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,14 +24,14 @@ public class CustomerService {
     private final CustomerRequestMapper requestMapper;
     private final CustomerResponseMapper responseMapper;
     private final CustomerUpdateMapper updateMapper;
-    private final LocationUtil locationUtil;
+    private final LocationService locationService;
 
-    public CustomerService(CustomerRepository repository, CustomerRequestMapper requestMapper, CustomerResponseMapper responseMapper, CustomerUpdateMapper updateMapper, LocationUtil locationUtil) {
+    public CustomerService(CustomerRepository repository, CustomerRequestMapper requestMapper, CustomerResponseMapper responseMapper, CustomerUpdateMapper updateMapper, LocationService locationService) {
         this.repository = repository;
         this.requestMapper = requestMapper;
         this.responseMapper = responseMapper;
         this.updateMapper = updateMapper;
-        this.locationUtil = locationUtil;
+        this.locationService = locationService;
     }
 
     @Transactional
@@ -44,7 +43,7 @@ public class CustomerService {
             throw new RegistrationException("Unable to register the customer. An internal error occurred in the API.");
 
         CustomerResponseDTO customerResponseDTO = responseMapper.from(savedCustomer);
-        String location = locationUtil.buildLocation("customer/" + customer.getId());
+        String location = locationService.buildLocation("customer/" + customer.getId());
 
         return ResponseEntity
                 .status(CREATED)

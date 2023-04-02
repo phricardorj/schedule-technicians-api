@@ -9,7 +9,6 @@ import br.com.phricardo.schedulingtechnicians.dto.update.mapper.TechnicianUpdate
 import br.com.phricardo.schedulingtechnicians.entities.Technician;
 import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.TechnicianRepository;
-import br.com.phricardo.schedulingtechnicians.util.LocationUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,14 +23,14 @@ public class TechnicianService {
     private final TechnicianRequestMapper requestMapper;
     private final TechnicianResponseMapper responseMapper;
     private final TechnicianUpdateMapper updateMapper;
-    private final LocationUtil locationUtil;
+    private final LocationService locationService;
 
-    public TechnicianService(TechnicianRepository repository, TechnicianRequestMapper requestMapper, TechnicianResponseMapper responseMapper, TechnicianUpdateMapper updateMapper, LocationUtil locationUtil) {
+    public TechnicianService(TechnicianRepository repository, TechnicianRequestMapper requestMapper, TechnicianResponseMapper responseMapper, TechnicianUpdateMapper updateMapper, LocationService locationService) {
         this.repository = repository;
         this.requestMapper = requestMapper;
         this.responseMapper = responseMapper;
         this.updateMapper = updateMapper;
-        this.locationUtil = locationUtil;
+        this.locationService = locationService;
     }
 
     @Transactional
@@ -43,7 +42,7 @@ public class TechnicianService {
             throw new RegistrationException("Unable to register the company. An internal error occurred in the API.");
 
         TechnicianResponseDTO technicianResponseDTO = responseMapper.from(savedTechnician);
-        String location = locationUtil.buildLocation("technician/" + technician.getEnrollment());
+        String location = locationService.buildLocation("technician/" + technician.getEnrollment());
 
         return ResponseEntity
                 .status(CREATED)

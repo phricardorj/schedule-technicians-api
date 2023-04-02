@@ -11,7 +11,6 @@ import br.com.phricardo.schedulingtechnicians.entities.Scheduling;
 import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.CustomerRepository;
 import br.com.phricardo.schedulingtechnicians.repository.SchedulingRepository;
-import br.com.phricardo.schedulingtechnicians.util.LocationUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,15 +26,15 @@ public class SchedulingService {
     private final SchedulingResponseMapper responseMapper;
     private final SchedulingUpdateMapper updateMapper;
     private final CustomerRepository customerRepository;
-    private final LocationUtil locationUtil;
+    private final LocationService locationService;
 
-    public SchedulingService(SchedulingRepository repository, SchedulingRequestMapper requestMapper, SchedulingResponseMapper responseMapper, SchedulingUpdateMapper updateMapper, CustomerRepository customerRepository, LocationUtil locationUtil) {
+    public SchedulingService(SchedulingRepository repository, SchedulingRequestMapper requestMapper, SchedulingResponseMapper responseMapper, SchedulingUpdateMapper updateMapper, CustomerRepository customerRepository, LocationService locationService) {
         this.repository = repository;
         this.requestMapper = requestMapper;
         this.responseMapper = responseMapper;
         this.updateMapper = updateMapper;
         this.customerRepository = customerRepository;
-        this.locationUtil = locationUtil;
+        this.locationService = locationService;
     }
 
     @Transactional
@@ -49,7 +48,7 @@ public class SchedulingService {
                 throw new RegistrationException("Unable to register the scheduling. An internal error occurred in the API.");
 
             SchedulingResponseDTO schedulingResponseDTO = responseMapper.from(savedScheduling);
-            String location = locationUtil.buildLocation("scheduling/" + scheduling.getOs());
+            String location = locationService.buildLocation("scheduling/" + scheduling.getOs());
 
             return ResponseEntity
                     .status(CREATED)
