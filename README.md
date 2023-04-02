@@ -22,6 +22,7 @@ docker-compose up -d
 # To do
 ```
 /api/v1/company
+- [✔️][GET] Get all registered companies
 - [✔️][GET] Get Company by Id
 - [✔️][POST] Register Company
 - [✔️][PATCH] Edit Company by Id
