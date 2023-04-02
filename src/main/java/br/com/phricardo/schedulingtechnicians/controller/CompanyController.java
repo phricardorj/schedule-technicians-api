@@ -3,10 +3,11 @@ package br.com.phricardo.schedulingtechnicians.controller;
 import br.com.phricardo.schedulingtechnicians.dto.request.CompanyRequestDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.CompanyResponseDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.CompanyUpdateDTO;
-import br.com.phricardo.schedulingtechnicians.entities.Company;
 import br.com.phricardo.schedulingtechnicians.service.CompanyService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +45,7 @@ public class CompanyController {
     }
 
     @GetMapping
-    public List<CompanyResponseDTO> getAllCompanies() {
-       return companyService.getAllCompanies();
+    public Page<CompanyResponseDTO> getAllCompanies(Pageable pageable) {
+       return companyService.getAllCompanies(pageable);
     }
 }

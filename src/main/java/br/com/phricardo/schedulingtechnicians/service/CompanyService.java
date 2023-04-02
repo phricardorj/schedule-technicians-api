@@ -10,6 +10,8 @@ import br.com.phricardo.schedulingtechnicians.entities.Company;
 import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.CompanyRepository;
 import br.com.phricardo.schedulingtechnicians.util.LocationUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -83,10 +85,8 @@ public class CompanyService {
         return ResponseEntity.notFound().build();
     }
 
-    public List<CompanyResponseDTO> getAllCompanies() {
-        List<Company> companies = repository.findAll();
-        return companies.stream()
-                .map(responseMapper::from)
-                .collect(Collectors.toList());
+    public Page<CompanyResponseDTO> getAllCompanies(Pageable pageable) {
+        Page<Company> companies = repository.findAll(pageable);
+        return companies.map(responseMapper::from);
     }
 }
