@@ -72,6 +72,7 @@ public class CompanyService {
         }
         return ResponseEntity.notFound().build();
     }
+
     @Transactional
     public ResponseEntity<Void> update(Long id, CompanyUpdateDTO companyUpdateDTO) {
         Company company = repository.findById(id).orElse(null);

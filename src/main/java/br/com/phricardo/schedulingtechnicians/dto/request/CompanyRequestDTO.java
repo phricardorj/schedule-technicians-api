@@ -15,27 +15,27 @@ import lombok.NoArgsConstructor;
 @Schema(title = "Company Request")
 public class CompanyRequestDTO {
 
-    @NotBlank
+    @NotBlank(message = "name is required")
     @Schema(description = "Name", example = "Empresa XYZ")
     private String name;
 
-    @NotBlank
     @CNPJ
+    @NotBlank(message = "cnpj is required")
     @Schema(description = "CNPJ", example = "27.625.852/0001-42")
     private String cnpj;
 
-    @NotBlank
-    @Pattern(regexp = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")
+    @NotBlank(message = "email is required")
+    @Pattern(regexp = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$", message = "email invalid")
     @Schema(description = "Email", example = "contato@empresaxyz.com.br")
     private String email;
 
-    @NotBlank
-    @Pattern(regexp = "^\\+55\\s\\(\\d{2}\\)\\s\\d{4}\\-\\d{4}$")
+    @NotBlank(message = "phone is required")
+    @Pattern(regexp = "^\\+55\\s\\(\\d{2}\\)\\s\\d{4}\\-\\d{4}$", message = "phone invalid, correct format is +55 (XX) XXXX-XXXX")
     @Schema(description = "Phone", example = "+55 (11) 3765-4321")
     private String phone;
 
-    @NotBlank
-    @Pattern(regexp = "^\\+55\\s\\(\\d{2}\\)\\s\\d{5}\\-\\d{4}$")
+    @NotBlank(message = "cellphone is required")
+    @Pattern(regexp = "^\\+55\\s\\(\\d{2}\\)\\s\\d{5}\\-\\d{4}$", message = "cellphone invalid, correct format is +55 (XX) XXXXX-XXXX")
     @Schema(description = "Cellphone", example = "+55 (11) 93765-4321")
     private String cellphone;
 

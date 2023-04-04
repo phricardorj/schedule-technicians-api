@@ -16,32 +16,32 @@ import java.time.LocalDate;
 @Schema(title = "Technician Request")
 public class TechnicianRequestDTO {
 
-    @NotBlank
+    @NotBlank(message = "name is required")
     @Schema(description = "Name", example = "João Silva")
     private String name;
 
-    @NotBlank
     @CPF
+    @NotBlank(message = "cpf is required")
     @Schema(description = "CPF", example = "123.456.789-10")
     private String cpf;
 
-    @NotNull
-    @Past
+    @Past(message = "the date must be in the past")
+    @NotBlank(message = "date of birth is required")
     @Schema(description = "Date Of Birth", example = "1980-01-01")
     private LocalDate dateOfBirth;
 
-    @NotBlank
-    @Pattern(regexp = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")
-    @Schema(description = "Email", example = "joao.silva@exemplo.com")
+    @NotBlank(message = "email is required")
+    @Pattern(regexp = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$", message = "email invalid")
+    @Schema(description = "Email", example = "contato@empresaxyz.com.br")
     private String email;
 
-    @NotBlank
-    @Pattern(regexp = "^\\+55\\s\\(\\d{2}\\)\\s\\d{4}\\-\\d{4}$")
+    @NotBlank(message = "phone is required")
+    @Pattern(regexp = "^\\+55\\s\\(\\d{2}\\)\\s\\d{4}\\-\\d{4}$", message = "phone invalid, correct format is +55 (XX) XXXX-XXXX")
     @Schema(description = "Phone", example = "+55 (11) 3765-4321")
     private String phone;
 
-    @NotBlank
-    @Pattern(regexp = "^\\+55\\s\\(\\d{2}\\)\\s\\d{5}\\-\\d{4}$")
+    @NotBlank(message = "cellphone is required")
+    @Pattern(regexp = "^\\+55\\s\\(\\d{2}\\)\\s\\d{5}\\-\\d{4}$", message = "cellphone invalid, correct format is +55 (XX) XXXXX-XXXX")
     @Schema(description = "Cellphone", example = "+55 (11) 93765-4321")
     private String cellphone;
 
