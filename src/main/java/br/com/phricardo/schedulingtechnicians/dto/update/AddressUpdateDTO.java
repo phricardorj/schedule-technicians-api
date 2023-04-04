@@ -1,6 +1,5 @@
 package br.com.phricardo.schedulingtechnicians.dto.update;
 
-import br.com.phricardo.schedulingtechnicians.validation.isInteger.NumberIsInteger;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
