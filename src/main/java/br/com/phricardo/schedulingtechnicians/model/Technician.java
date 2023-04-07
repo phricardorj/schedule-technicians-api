@@ -1,5 +1,6 @@
-package br.com.phricardo.schedulingtechnicians.entities;
+package br.com.phricardo.schedulingtechnicians.model;
 
+import br.com.phricardo.schedulingtechnicians.util.TechnicianRegistrationUtil;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,9 +13,9 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Entity(name = "customer")
-@Table(name = "customers")
-public class Customer {
+@Entity(name = "Technician")
+@Table(name = "technicians")
+public class Technician {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -25,7 +26,13 @@ public class Customer {
     private String email;
     private String phone;
     private String cellphone;
+    private Long enrollment;
 
     @Embedded
     private Address address;
+
+    @PrePersist
+    private void prePersist() {
+        this.enrollment = TechnicianRegistrationUtil.generate();
+    }
 }

@@ -1,6 +1,6 @@
 package br.com.phricardo.schedulingtechnicians.repository;
 
-import br.com.phricardo.schedulingtechnicians.entities.Scheduling;
+import br.com.phricardo.schedulingtechnicians.model.Scheduling;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

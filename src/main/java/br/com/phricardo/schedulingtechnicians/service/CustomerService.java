@@ -6,7 +6,7 @@ import br.com.phricardo.schedulingtechnicians.dto.response.CustomerResponseDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.mapper.CustomerResponseMapper;
 import br.com.phricardo.schedulingtechnicians.dto.update.CustomerUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.mapper.CustomerUpdateMapper;
-import br.com.phricardo.schedulingtechnicians.entities.Customer;
+import br.com.phricardo.schedulingtechnicians.model.Customer;
 import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.CustomerRepository;
 import jakarta.transaction.Transactional;

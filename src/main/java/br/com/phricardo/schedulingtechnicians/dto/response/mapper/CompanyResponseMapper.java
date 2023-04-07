@@ -1,7 +1,7 @@
 package br.com.phricardo.schedulingtechnicians.dto.response.mapper;
 
 import br.com.phricardo.schedulingtechnicians.dto.response.CompanyResponseDTO;
-import br.com.phricardo.schedulingtechnicians.entities.Company;
+import br.com.phricardo.schedulingtechnicians.model.Company;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

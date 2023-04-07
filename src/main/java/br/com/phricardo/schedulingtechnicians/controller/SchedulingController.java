@@ -2,9 +2,7 @@ package br.com.phricardo.schedulingtechnicians.controller;
 
 import br.com.phricardo.schedulingtechnicians.dto.request.SchedulingRequestDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.SchedulingResponseDTO;
-import br.com.phricardo.schedulingtechnicians.dto.update.CustomerUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.SchedulingUpdateDTO;
-import br.com.phricardo.schedulingtechnicians.entities.Scheduling;
 import br.com.phricardo.schedulingtechnicians.service.SchedulingService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

@@ -1,4 +1,4 @@
-package br.com.phricardo.schedulingtechnicians.entities;
+package br.com.phricardo.schedulingtechnicians.model;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

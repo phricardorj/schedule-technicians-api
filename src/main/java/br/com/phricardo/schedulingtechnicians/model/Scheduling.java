@@ -1,4 +1,4 @@
-package br.com.phricardo.schedulingtechnicians.entities;
+package br.com.phricardo.schedulingtechnicians.model;
 
 import br.com.phricardo.schedulingtechnicians.util.ServiceOrderUtil;
 import jakarta.persistence.*;
@@ -13,7 +13,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Entity(name = "scheduling")
+@Entity(name = "Scheduling")
 @Table(name = "schedules")
 public class Scheduling {
 
