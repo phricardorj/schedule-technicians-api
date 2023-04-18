@@ -33,13 +33,13 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody CompanyUpdateDTO companyUpdateDTO) {
+    public ResponseEntity<CompanyResponseDTO> update(@PathVariable Long id, @Valid @RequestBody CompanyUpdateDTO companyUpdateDTO) {
         return companyService.update(id, companyUpdateDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
-        return companyService.deleteCompanyById(id);
+    public void delete(@PathVariable Long id){
+        companyService.deleteCompanyById(id);
     }
 
     @GetMapping

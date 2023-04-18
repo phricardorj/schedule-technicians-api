@@ -6,18 +6,18 @@ import br.com.phricardo.schedulingtechnicians.dto.response.CompanyResponseDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.mapper.CompanyResponseMapper;
 import br.com.phricardo.schedulingtechnicians.dto.update.CompanyUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.mapper.CompanyUpdateMapper;
-import br.com.phricardo.schedulingtechnicians.model.Company;
 import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.CompanyRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import static java.util.Objects.nonNull;
-import static org.springframework.http.HttpStatus.OK;
+import java.net.URI;
+
+import static java.util.Optional.*;
 
 @Service
 public class CompanyService {
@@ -36,59 +36,45 @@ public class CompanyService {
         this.locationService = locationService;
     }
 
-    @Transactional
-    public ResponseEntity<CompanyResponseDTO> register(CompanyRequestDTO dto) throws RegistrationException {
-        Company company = requestMapper.from(dto);
-        Company savedCompany = repository.save(company);
-
-        if (savedCompany.getId() == null)
-            throw new RegistrationException("Unable to register the company. An internal error occurred in the API.");
-
-        CompanyResponseDTO companyResponseDTO = responseMapper.from(savedCompany);
-        String location = locationService.buildLocation("company/" + savedCompany.getId());
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .header("Location", location)
-                .body(companyResponseDTO);
-    }
-
     public ResponseEntity<CompanyResponseDTO> getCompanyById(Long id) {
-        Company company = repository.findById(id).orElse(null);
-        if(nonNull(company)) {
-            CompanyResponseDTO companyResponseDTO = responseMapper.from(company);
-            return ResponseEntity
-                    .status(OK)
-                    .body(companyResponseDTO);
-        }
-        return ResponseEntity.notFound().build();
-    }
-    @Transactional
-    public ResponseEntity<Void> deleteCompanyById(Long id) {
-        Company company = repository.findById(id).orElse(null);
-        if(nonNull(company)) {
-            repository.delete(company);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+        return repository.findById(id)
+                .map(responseMapper::from)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntityNotFoundException("Company not found with ID: " + id));
     }
 
     @Transactional
-    public ResponseEntity<Void> update(Long id, CompanyUpdateDTO companyUpdateDTO) {
-        Company company = repository.findById(id).orElse(null);
-        if(nonNull(company)) {
-            updateMapper.updateCompanyFromDTO(companyUpdateDTO, company);
-            repository.save(company);
-            return ResponseEntity
-                    .status(OK)
-                    .header("Location", locationService.buildLocation("company/" + company.getId()))
-                    .build();
-        }
-        return ResponseEntity.notFound().build();
+    public void deleteCompanyById(Long id) {
+         final var company = repository.findById(id)
+                 .orElseThrow(() -> new EntityNotFoundException("Company not found with ID: " + id));
+         repository.delete(company);
+    }
+
+    @Transactional
+    public ResponseEntity<CompanyResponseDTO> update(Long id, CompanyUpdateDTO companyUpdateDTO) {
+      return repository.findById(id)
+                .map(company -> {
+                    updateMapper.updateCompanyFromDTO(companyUpdateDTO, company);
+                    return repository.save(company);
+                })
+                .map(responseMapper::from)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntityNotFoundException("Company not found with ID: " + id));
+    }
+
+    @Transactional
+    public ResponseEntity<CompanyResponseDTO> register(CompanyRequestDTO dto) {
+        return of(requestMapper.from(dto))
+                .map(repository::save)
+                .map(savedCompany ->
+                     ResponseEntity.created(
+                             URI.create(locationService.buildLocation("company/" + savedCompany.getId())))
+                             .body(responseMapper.from(savedCompany))
+                )
+                .orElseThrow(() -> new RegistrationException("Failed to register. Please verify the provided data and try again."));
     }
 
     public Page<CompanyResponseDTO> getAllCompanies(Pageable pageable) {
-        Page<Company> companies = repository.findAll(pageable);
-        return companies.map(responseMapper::from);
+        return repository.findAll(pageable).map(responseMapper::from);
     }
 }
