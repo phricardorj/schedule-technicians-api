@@ -6,18 +6,20 @@ import br.com.phricardo.schedulingtechnicians.dto.response.CustomerResponseDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.mapper.CustomerResponseMapper;
 import br.com.phricardo.schedulingtechnicians.dto.update.CustomerUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.mapper.CustomerUpdateMapper;
-import br.com.phricardo.schedulingtechnicians.model.Customer;
 import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.CustomerRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import static java.util.Objects.nonNull;
-import static org.springframework.http.HttpStatus.*;
-import static org.springframework.http.HttpStatus.CREATED;
+import java.net.URI;
+
+import static java.util.Optional.*;
 
 @Service
+@AllArgsConstructor
 public class CustomerService {
 
     private final CustomerRepository repository;
@@ -26,63 +28,40 @@ public class CustomerService {
     private final CustomerUpdateMapper updateMapper;
     private final LocationService locationService;
 
-    public CustomerService(CustomerRepository repository, CustomerRequestMapper requestMapper, CustomerResponseMapper responseMapper, CustomerUpdateMapper updateMapper, LocationService locationService) {
-        this.repository = repository;
-        this.requestMapper = requestMapper;
-        this.responseMapper = responseMapper;
-        this.updateMapper = updateMapper;
-        this.locationService = locationService;
-    }
-
     @Transactional
-    public ResponseEntity<CustomerResponseDTO> register(CustomerRequestDTO dto) throws RegistrationException {
-        Customer customer = requestMapper.from(dto);
-        Customer savedCustomer = repository.save(customer);
-
-        if(savedCustomer.getId() == null)
-            throw new RegistrationException("Unable to register the customer. An internal error occurred in the API.");
-
-        CustomerResponseDTO customerResponseDTO = responseMapper.from(savedCustomer);
-        String location = locationService.buildLocation("customer/" + customer.getId());
-
-        return ResponseEntity
-                .status(CREATED)
-                .header("Location", location)
-                .body(customerResponseDTO);
+    public ResponseEntity<CustomerResponseDTO> register(CustomerRequestDTO dto) {
+        return of(requestMapper.from(dto))
+                .map(repository::save)
+                .map(saved ->
+                        ResponseEntity.created(
+                                        URI.create(locationService.buildLocation("customer/" + saved.getId())))
+                                .body(responseMapper.from(saved))
+                )
+                .orElseThrow(() -> new RegistrationException("Failed to register. Please verify the provided data and try again."));
     }
 
     public ResponseEntity<CustomerResponseDTO> getCustomerById(Long id) {
-        Customer customer = repository.findById(id).orElse(null);
-        if(nonNull(customer)) {
-            CustomerResponseDTO customerResponseDTO = responseMapper.from(customer);
-            return ResponseEntity
-                    .status(OK)
-                    .body(customerResponseDTO);
-        }
-        return ResponseEntity.notFound().build();
+        return repository.findById(id)
+                .map(responseMapper::from)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + id));
     }
 
     @Transactional
-    public ResponseEntity<Void> deleteCustomerById(Long id) {
-        Customer customer = repository.findById(id).orElse(null);
-        if(nonNull(customer)) {
-            repository.delete(customer);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    public void deleteCustomerById(Long id) {
+        repository.delete(repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + id)));
     }
 
     @Transactional
-    public ResponseEntity<Void> update(Long id, CustomerUpdateDTO customerUpdateDTO) {
-        Customer customer = repository.findById(id).orElse(null);
-        if(nonNull(customer)) {
-            updateMapper.updateCustomerFromDTO(customerUpdateDTO, customer);
-            repository.save(customer);
-            return ResponseEntity
-                    .status(OK)
-                    .header("Location", locationService.buildLocation("customer/" + customer.getId()))
-                    .build();
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<CustomerResponseDTO> update(Long id, CustomerUpdateDTO customerUpdateDTO) {
+        return repository.findById(id)
+                .map(customer -> {
+                    updateMapper.updateCustomerFromDTO(customerUpdateDTO, customer);
+                    return repository.save(customer);
+                })
+                .map(responseMapper::from)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + id));
     }
 }

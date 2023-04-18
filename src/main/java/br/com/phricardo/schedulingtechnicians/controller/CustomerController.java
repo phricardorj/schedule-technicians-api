@@ -31,12 +31,12 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody CustomerUpdateDTO customerUpdateDTO) {
+    public ResponseEntity<CustomerResponseDTO> update(@PathVariable Long id, @Valid @RequestBody CustomerUpdateDTO customerUpdateDTO) {
         return customerService.update(id, customerUpdateDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
-        return customerService.deleteCustomerById(id);
+    public void delete(@PathVariable Long id){
+         customerService.deleteCustomerById(id);
     }
 }
