@@ -1,7 +1,6 @@
 package br.com.phricardo.schedulingtechnicians.exception.handler;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -12,12 +11,18 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
+
+import static org.springframework.http.HttpStatus.*;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<?> handleNotFound() {
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<?> handleNotFound(EntityNotFoundException ex) {
+        return ResponseEntity.status(NOT_FOUND)
+                .body(new ErrorResponse(NOT_FOUND.value(), ex.getLocalizedMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -28,32 +33,49 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleBadRequest(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+        return ResponseEntity.status(BAD_REQUEST)
+                .body(new ErrorResponse(BAD_REQUEST.value(), ex.getMessage()));
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> handleBadCredentials() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        return ResponseEntity.status(UNAUTHORIZED)
+                .body(new ErrorResponse(UNAUTHORIZED.value(), "Invalid credentials"));
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<?> handleAuthenticationFailure() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
+        return ResponseEntity.status(UNAUTHORIZED)
+                .body(new ErrorResponse(UNAUTHORIZED.value(), "Authentication failed"));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<?> handleAccessDenied() {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied");
+        return ResponseEntity.status(FORBIDDEN)
+                .body(new ErrorResponse(FORBIDDEN.value(), "Access denied"));
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<?> handleNoSuchElement(NoSuchElementException ex) {
+        return ResponseEntity.status(NOT_FOUND)
+                .body(new ErrorResponse(NOT_FOUND.value(), ex.getLocalizedMessage()));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleInternalServerError(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + ex.getLocalizedMessage());
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse(INTERNAL_SERVER_ERROR.value(), ex.getLocalizedMessage()));
     }
 
     private record ValidatedErrors(String field, String message) {
         public ValidatedErrors(FieldError error) {
             this(error.getField(), error.getDefaultMessage());
+        }
+    }
+
+    public record ErrorResponse(LocalDateTime date, int statusCode, String message) {
+        public ErrorResponse(int statusCode, String message) {
+            this(LocalDateTime.now(), statusCode, message);
         }
     }
 }
