@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.springframework.http.HttpStatus.*;
@@ -28,14 +29,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleBadRequest(MethodArgumentNotValidException ex) {
-        var errors = ex.getFieldErrors();
-        return ResponseEntity.badRequest().body(errors.stream().map(ValidatedErrors::new).toList());
+        final var errors = ex.getFieldErrors().stream().map(ValidatedErrors::new).toList();
+        return ResponseEntity.status(BAD_REQUEST)
+                .body(new ErrorResponse(BAD_REQUEST.value(), errors));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleBadRequest(HttpMessageNotReadableException ex) {
         return ResponseEntity.status(BAD_REQUEST)
-                .body(new ErrorResponse(BAD_REQUEST.value(), ex.getMessage()));
+                .body(new ErrorResponse(BAD_REQUEST.value(), "Invalid request payload: please check that your request payload is a valid JSON object and that all required fields are present."));
     }
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -80,9 +82,14 @@ public class GlobalExceptionHandler {
         }
     }
 
-    public record ErrorResponse(LocalDateTime date, int statusCode, String message) {
+    public record ErrorResponse(LocalDateTime date, int statusCode, Object message) {
         public ErrorResponse(int statusCode, String message) {
             this(LocalDateTime.now(), statusCode, message);
         }
+
+        public ErrorResponse(int statusCode, List<?> messageList) {
+            this(LocalDateTime.now(), statusCode, messageList);
+        }
     }
+
 }

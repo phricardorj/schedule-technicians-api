@@ -2,6 +2,7 @@ package br.com.phricardo.schedulingtechnicians.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,5 +23,6 @@ public class SchedulingRequestDTO {
 
     @NotNull(message = "customer id is required")
     @Schema(description = "Customer Id", example = "123")
+    @Min(value = 1, message = "Customer ID must be greater than zero")
     private Long customerId;
 }
