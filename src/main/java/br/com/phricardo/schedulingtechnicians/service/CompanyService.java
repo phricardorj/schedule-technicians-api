@@ -10,6 +10,7 @@ import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.CompanyRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.net.URI;
 import static java.util.Optional.*;
 
 @Service
+@AllArgsConstructor
 public class CompanyService {
 
     private final CompanyRepository repository;
@@ -28,19 +30,23 @@ public class CompanyService {
     private final CompanyUpdateMapper updateMapper;
     private final LocationService locationService;
 
-    public CompanyService(CompanyRepository repository, CompanyRequestMapper requestMapper, CompanyResponseMapper responseMapper, CompanyUpdateMapper updateMapper, LocationService locationService) {
-        this.repository = repository;
-        this.requestMapper = requestMapper;
-        this.responseMapper = responseMapper;
-        this.updateMapper = updateMapper;
-        this.locationService = locationService;
-    }
-
     public ResponseEntity<CompanyResponseDTO> getCompanyById(Long id) {
         return repository.findById(id)
                 .map(responseMapper::from)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new EntityNotFoundException("Company not found with ID: " + id));
+    }
+
+    @Transactional
+    public ResponseEntity<CompanyResponseDTO> register(CompanyRequestDTO dto) {
+        return of(requestMapper.from(dto))
+                .map(repository::save)
+                .map(savedCompany ->
+                        ResponseEntity.created(
+                                        URI.create(locationService.buildLocation("company/" + savedCompany.getId())))
+                                .body(responseMapper.from(savedCompany))
+                )
+                .orElseThrow(() -> new RegistrationException("Failed to register. Please verify the provided data and try again."));
     }
 
     @Transactional
@@ -57,21 +63,11 @@ public class CompanyService {
                     updateMapper.updateCompanyFromDTO(companyUpdateDTO, company);
                     return repository.save(company);
                 })
-                .map(responseMapper::from)
-                .map(ResponseEntity::ok)
+              .map(updated ->
+                      ResponseEntity.created(
+                                      URI.create(locationService.buildLocation("company/" + updated.getId())))
+                              .body(responseMapper.from(updated)))
                 .orElseThrow(() -> new EntityNotFoundException("Company not found with ID: " + id));
-    }
-
-    @Transactional
-    public ResponseEntity<CompanyResponseDTO> register(CompanyRequestDTO dto) {
-        return of(requestMapper.from(dto))
-                .map(repository::save)
-                .map(savedCompany ->
-                     ResponseEntity.created(
-                             URI.create(locationService.buildLocation("company/" + savedCompany.getId())))
-                             .body(responseMapper.from(savedCompany))
-                )
-                .orElseThrow(() -> new RegistrationException("Failed to register. Please verify the provided data and try again."));
     }
 
     public Page<CompanyResponseDTO> getAllCompanies(Pageable pageable) {

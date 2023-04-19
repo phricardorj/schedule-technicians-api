@@ -12,6 +12,7 @@ import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.CustomerRepository;
 import br.com.phricardo.schedulingtechnicians.repository.SchedulingRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import static java.util.Objects.nonNull;
 import static org.springframework.http.HttpStatus.*;
 
 @Service
+@AllArgsConstructor
 public class SchedulingService {
 
     private final SchedulingRepository repository;
@@ -27,15 +29,6 @@ public class SchedulingService {
     private final SchedulingUpdateMapper updateMapper;
     private final CustomerRepository customerRepository;
     private final LocationService locationService;
-
-    public SchedulingService(SchedulingRepository repository, SchedulingRequestMapper requestMapper, SchedulingResponseMapper responseMapper, SchedulingUpdateMapper updateMapper, CustomerRepository customerRepository, LocationService locationService) {
-        this.repository = repository;
-        this.requestMapper = requestMapper;
-        this.responseMapper = responseMapper;
-        this.updateMapper = updateMapper;
-        this.customerRepository = customerRepository;
-        this.locationService = locationService;
-    }
 
     @Transactional
     public ResponseEntity<?> register(SchedulingRequestDTO dto) throws RegistrationException {

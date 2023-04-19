@@ -60,8 +60,10 @@ public class CustomerService {
                     updateMapper.updateCustomerFromDTO(customerUpdateDTO, customer);
                     return repository.save(customer);
                 })
-                .map(responseMapper::from)
-                .map(ResponseEntity::ok)
+                .map(updated ->
+                        ResponseEntity.created(
+                                        URI.create(locationService.buildLocation("customer/" + updated.getId())))
+                                .body(responseMapper.from(updated)))
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + id));
     }
 }
