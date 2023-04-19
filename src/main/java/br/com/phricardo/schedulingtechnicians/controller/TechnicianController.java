@@ -31,12 +31,12 @@ public class TechnicianController {
     }
 
     @PutMapping("/{enrollment}")
-    public ResponseEntity<Void> update(@PathVariable Long enrollment, @Valid @RequestBody TechnicianUpdateDTO technicianUpdateDTO) {
+    public ResponseEntity<TechnicianResponseDTO> update(@PathVariable Long enrollment, @Valid @RequestBody TechnicianUpdateDTO technicianUpdateDTO) {
         return technicianService.update(enrollment, technicianUpdateDTO);
     }
 
     @DeleteMapping("/{enrollment}")
-    public ResponseEntity<Void> delete(@PathVariable Long enrollment) {
-        return technicianService.deleteTechnicianByEnrollment(enrollment);
+    public void delete(@PathVariable Long enrollment) {
+        technicianService.deleteTechnicianByEnrollment(enrollment);
     }
 }
