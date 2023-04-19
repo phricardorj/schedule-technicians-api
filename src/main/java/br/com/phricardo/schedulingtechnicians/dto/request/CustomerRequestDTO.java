@@ -26,7 +26,7 @@ public class CustomerRequestDTO {
     private String cpf;
 
     @Past(message = "the date of birth must be in the past")
-    @NotBlank(message = "date of birth is required")
+    @NotNull(message = "date of birth is required")
     @Schema(description = "Date Of Birth", example = "1985-01-01")
     private LocalDate dateOfBirth;
 

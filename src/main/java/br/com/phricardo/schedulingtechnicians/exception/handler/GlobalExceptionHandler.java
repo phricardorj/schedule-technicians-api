@@ -1,5 +1,6 @@
 package br.com.phricardo.schedulingtechnicians.exception.handler;
 
+import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -59,6 +60,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleNoSuchElement(NoSuchElementException ex) {
         return ResponseEntity.status(NOT_FOUND)
                 .body(new ErrorResponse(NOT_FOUND.value(), ex.getLocalizedMessage()));
+    }
+
+    @ExceptionHandler(RegistrationException.class)
+    public ResponseEntity<?> handleRegistration(RegistrationException ex) {
+        return ResponseEntity.status(BAD_REQUEST)
+                .body(new ErrorResponse(BAD_REQUEST.value(), ex.getLocalizedMessage()));
     }
 
     @ExceptionHandler(Exception.class)
