@@ -6,18 +6,19 @@ import br.com.phricardo.schedulingtechnicians.dto.response.SchedulingResponseDTO
 import br.com.phricardo.schedulingtechnicians.dto.response.mapper.SchedulingResponseMapper;
 import br.com.phricardo.schedulingtechnicians.dto.update.SchedulingUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.mapper.SchedulingUpdateMapper;
-import br.com.phricardo.schedulingtechnicians.model.Customer;
-import br.com.phricardo.schedulingtechnicians.model.Scheduling;
 import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
+import br.com.phricardo.schedulingtechnicians.model.Customer;
 import br.com.phricardo.schedulingtechnicians.repository.CustomerRepository;
 import br.com.phricardo.schedulingtechnicians.repository.SchedulingRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import static java.util.Objects.nonNull;
-import static org.springframework.http.HttpStatus.*;
+import java.net.URI;
+
+import static java.util.Optional.*;
 
 @Service
 @AllArgsConstructor
@@ -31,58 +32,44 @@ public class SchedulingService {
     private final LocationService locationService;
 
     @Transactional
-    public ResponseEntity<?> register(SchedulingRequestDTO dto) throws RegistrationException {
-        Customer customer = customerRepository.findById(dto.getCustomerId()).orElse(null);
-        if(nonNull(customer)) {
-            Scheduling scheduling = requestMapper.from(dto);
-            Scheduling savedScheduling = repository.save(scheduling);
+    public ResponseEntity<?> register(SchedulingRequestDTO schedulingRequestDTO) throws RegistrationException {
+        Customer customer = customerRepository.findById(schedulingRequestDTO.getCustomerId())
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + schedulingRequestDTO.getCustomerId()));
 
-            if(savedScheduling.getId() == null)
-                throw new RegistrationException("Unable to register the scheduling. An internal error occurred in the API.");
-
-            SchedulingResponseDTO schedulingResponseDTO = responseMapper.from(savedScheduling);
-            String location = locationService.buildLocation("scheduling/" + scheduling.getOs());
-
-            return ResponseEntity
-                    .status(CREATED)
-                    .header("Location", location)
-                    .body(schedulingResponseDTO);
-        }
-        return ResponseEntity.status(NOT_FOUND).body("customer id not found");
+        return of(schedulingRequestDTO)
+                .map(requestMapper::from)
+                .map(repository::save)
+                .map(saved ->
+                    ResponseEntity.created(
+                    URI.create(locationService.buildLocation("scheduling/" + saved.getOs())))
+                    .body(responseMapper.from(saved))
+                ).orElseThrow(() -> new RegistrationException("Failed to register. Please verify the provided data and try again."));
     }
 
-    public ResponseEntity<SchedulingResponseDTO> getSchedulingByServiceOrder(String os) {
-        Scheduling scheduling = repository.findByOs(os).orElse(null);
-        if(nonNull(scheduling)) {
-            SchedulingResponseDTO schedulingResponseDTO = responseMapper.from(scheduling);
-            return ResponseEntity
-                    .status(OK)
-                    .body(schedulingResponseDTO);
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<SchedulingResponseDTO> getSchedulingByServiceOrder(String serviceOrder) {
+        return repository.findByOs(serviceOrder)
+                .map(responseMapper::from)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntityNotFoundException("Scheduling not found with service order: " + serviceOrder));
     }
 
     @Transactional
-    public ResponseEntity<Void> deleteSchedulingByServiceOrder(String os) {
-        Scheduling scheduling = repository.findByOs(os).orElse(null);
-        if(nonNull(scheduling)) {
-            repository.delete(scheduling);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    public void deleteSchedulingByServiceOrder(String serviceOrder) {
+        repository.delete(repository.findByOs(serviceOrder)
+                .orElseThrow(() -> new EntityNotFoundException("Scheduling not found with service order: " + serviceOrder)));
     }
 
     @Transactional
-    public ResponseEntity<Void> update(String os, SchedulingUpdateDTO schedulingUpdateDTO) {
-        Scheduling scheduling = repository.findByOs(os).orElse(null);
-        if(nonNull(scheduling)) {
-            updateMapper.updateSchedulingFromDTO(schedulingUpdateDTO, scheduling);
-            repository.save(scheduling);
-            return ResponseEntity
-                    .status(OK)
-                    .header("Location", locationService.buildLocation("scheduling/" + scheduling.getOs()))
-                    .build();
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<SchedulingResponseDTO> update(String serviceOrder, SchedulingUpdateDTO schedulingUpdateDTO) {
+        return repository.findByOs(serviceOrder)
+                .map(scheduling -> {
+                    updateMapper.updateSchedulingFromDTO(schedulingUpdateDTO, scheduling);
+                    return repository.save(scheduling);
+                })
+                .map(updated ->
+                        ResponseEntity.created(
+                                        URI.create(locationService.buildLocation("scheduling/" + updated.getOs())))
+                                .body(responseMapper.from(updated)))
+                .orElseThrow(() -> new EntityNotFoundException("Scheduling not found with service order: " + serviceOrder));
     }
 }

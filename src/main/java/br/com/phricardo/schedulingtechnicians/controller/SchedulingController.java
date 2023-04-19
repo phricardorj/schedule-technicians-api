@@ -31,12 +31,12 @@ public class SchedulingController {
     }
 
     @PutMapping("/{os}")
-    public ResponseEntity<Void> update(@PathVariable String os, @Valid @RequestBody SchedulingUpdateDTO schedulingUpdateDTO) {
+    public ResponseEntity<SchedulingResponseDTO> update(@PathVariable String os, @Valid @RequestBody SchedulingUpdateDTO schedulingUpdateDTO) {
         return schedulingService.update(os, schedulingUpdateDTO);
     }
 
     @DeleteMapping("/{os}")
-    public ResponseEntity<Void> delete(@PathVariable String os) {
-        return schedulingService.deleteSchedulingByServiceOrder(os);
+    public void delete(@PathVariable String os) {
+        schedulingService.deleteSchedulingByServiceOrder(os);
     }
 }
