@@ -82,7 +82,7 @@ public class GlobalExceptionHandler {
         }
     }
 
-    public record ErrorResponse(LocalDateTime date, int statusCode, Object message) {
+    public record ErrorResponse(LocalDateTime date, int httpStatusCode, Object message) {
         public ErrorResponse(int statusCode, String message) {
             this(LocalDateTime.now(), statusCode, message);
         }
