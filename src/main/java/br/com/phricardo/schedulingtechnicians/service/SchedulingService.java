@@ -7,7 +7,6 @@ import br.com.phricardo.schedulingtechnicians.dto.response.mapper.SchedulingResp
 import br.com.phricardo.schedulingtechnicians.dto.update.SchedulingUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.mapper.SchedulingUpdateMapper;
 import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
-import br.com.phricardo.schedulingtechnicians.model.Customer;
 import br.com.phricardo.schedulingtechnicians.repository.CustomerRepository;
 import br.com.phricardo.schedulingtechnicians.repository.SchedulingRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -33,17 +32,15 @@ public class SchedulingService {
 
     @Transactional
     public ResponseEntity<?> register(SchedulingRequestDTO schedulingRequestDTO) throws RegistrationException {
-        Customer customer = customerRepository.findById(schedulingRequestDTO.getCustomerId())
+        return customerRepository.findById(schedulingRequestDTO.getCustomerId())
+                .map(customer -> of(schedulingRequestDTO)
+                        .map(requestMapper::from)
+                        .map(repository::save)
+                        .map(saved -> ResponseEntity.created(
+                                        URI.create(locationService.buildLocation("scheduling/" + saved.getOs())))
+                                .body(responseMapper.from(saved)))
+                        .orElseThrow(() -> new RegistrationException("Failed to register. Please verify the provided data and try again.")))
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + schedulingRequestDTO.getCustomerId()));
-
-        return of(schedulingRequestDTO)
-                .map(requestMapper::from)
-                .map(repository::save)
-                .map(saved ->
-                    ResponseEntity.created(
-                    URI.create(locationService.buildLocation("scheduling/" + saved.getOs())))
-                    .body(responseMapper.from(saved))
-                ).orElseThrow(() -> new RegistrationException("Failed to register. Please verify the provided data and try again."));
     }
 
     public ResponseEntity<SchedulingResponseDTO> getSchedulingByServiceOrder(String serviceOrder) {
