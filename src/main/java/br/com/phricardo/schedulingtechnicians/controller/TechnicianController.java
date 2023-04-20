@@ -4,6 +4,7 @@ import br.com.phricardo.schedulingtechnicians.dto.request.TechnicianRequestDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.TechnicianResponseDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.TechnicianUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.service.TechnicianService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/v1/technician")
 @Tag(name = "Technician", description = "Endpoints to manage technician information")
+@SecurityRequirement(name = "bearer-key")
 public class TechnicianController {
 
     private final TechnicianService technicianService;

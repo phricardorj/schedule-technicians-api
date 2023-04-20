@@ -4,6 +4,7 @@ import br.com.phricardo.schedulingtechnicians.dto.request.SchedulingRequestDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.SchedulingResponseDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.SchedulingUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.service.SchedulingService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/v1/scheduling")
 @Tag(name = "Scheduling", description = "Endpoints for managing scheduling information")
+@SecurityRequirement(name = "bearer-key")
 public class SchedulingController {
 
     private final SchedulingService schedulingService;

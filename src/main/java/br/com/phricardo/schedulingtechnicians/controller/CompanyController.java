@@ -4,6 +4,7 @@ import br.com.phricardo.schedulingtechnicians.dto.request.CompanyRequestDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.CompanyResponseDTO;
 import br.com.phricardo.schedulingtechnicians.dto.update.CompanyUpdateDTO;
 import br.com.phricardo.schedulingtechnicians.service.CompanyService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/v1/company")
 @Tag(name = "Company", description = "Endpoints to manage company information")
+@SecurityRequirement(name = "bearer-key")
 public class CompanyController {
 
     private final CompanyService companyService;
