@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/v1/company")
 @Tag(name = "Company", description = "Endpoints to manage company information")
-@SecurityRequirement(name = "bearer-key")
 public class CompanyController {
 
     private final CompanyService companyService;
@@ -25,21 +24,24 @@ public class CompanyController {
     }
 
     @PostMapping
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<CompanyResponseDTO> register(@Valid @RequestBody CompanyRequestDTO companyRequestDTO) {
         return companyService.register(companyRequestDTO);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CompanyResponseDTO> customerById(@PathVariable Long id){
+    public ResponseEntity<CompanyResponseDTO> companyById(@PathVariable Long id){
         return companyService.getCompanyById(id);
     }
 
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<CompanyResponseDTO> update(@PathVariable Long id, @Valid @RequestBody CompanyUpdateDTO companyUpdateDTO) {
         return companyService.update(id, companyUpdateDTO);
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public void delete(@PathVariable Long id){
         companyService.deleteCompanyById(id);
     }
