@@ -1,6 +1,6 @@
 package br.com.phricardo.schedulingtechnicians.configuration.security;
 
-import br.com.phricardo.schedulingtechnicians.repository.UserRepository;
+import br.com.phricardo.schedulingtechnicians.repository.UserAuthRepository;
 import br.com.phricardo.schedulingtechnicians.service.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -24,7 +24,7 @@ import java.util.Date;
 public class SecurityFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
-    private final UserRepository userRepository;
+    private final UserAuthRepository userAuthRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
@@ -32,7 +32,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         if(token != null)  {
             try {
                 final var subject = tokenService.validateAndGetSubject(token);
-                final var user = userRepository.findByLogin(subject);
+                final var user = userAuthRepository.findByLogin(subject);
                 final var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (Exception exception) {

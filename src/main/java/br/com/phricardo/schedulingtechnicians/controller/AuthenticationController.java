@@ -1,10 +1,10 @@
 package br.com.phricardo.schedulingtechnicians.controller;
 
-import br.com.phricardo.schedulingtechnicians.dto.request.AuthLoginRequestDTO;
-import br.com.phricardo.schedulingtechnicians.dto.request.AuthRegisterRequestDTO;
+import br.com.phricardo.schedulingtechnicians.dto.request.UserAuthLoginRequestDTO;
+import br.com.phricardo.schedulingtechnicians.dto.request.UserAuthRegisterRequestDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.TokenResponseDTO;
-import br.com.phricardo.schedulingtechnicians.model.user.User;
-import br.com.phricardo.schedulingtechnicians.service.AuthenticationService;
+import br.com.phricardo.schedulingtechnicians.model.User;
+import br.com.phricardo.schedulingtechnicians.service.UserAuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -21,16 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Authentication", description = "Endpoints for user authentication and registration")
 public class AuthenticationController {
 
-    private final AuthenticationService service;
+    private final UserAuthenticationService service;
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
-    public User register(@RequestBody @Valid AuthRegisterRequestDTO registerRequestDTO) {
+    public User register(@RequestBody @Valid UserAuthRegisterRequestDTO registerRequestDTO) {
         return service.registerUser(registerRequestDTO);
     }
 
     @PostMapping("/login")
-    public TokenResponseDTO login(@RequestBody @Valid AuthLoginRequestDTO loginRequestDTO) {
+    public TokenResponseDTO login(@RequestBody @Valid UserAuthLoginRequestDTO loginRequestDTO) {
         return service.loginUser(loginRequestDTO, authenticationManager);
     }
 }

@@ -1,4 +1,4 @@
-package br.com.phricardo.schedulingtechnicians.model.user;
+package br.com.phricardo.schedulingtechnicians.model;
 
 import jakarta.persistence.*;
 import lombok.*;

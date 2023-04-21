@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(title = "Auth Login Request")
-public class AuthLoginRequestDTO {
+@Schema(title = "Auth Register Request")
+public class UserAuthRegisterRequestDTO {
 
     @NotBlank(message = "email is required")
     @Pattern(regexp = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$", message = "login needs to be a valid email")
@@ -19,6 +19,7 @@ public class AuthLoginRequestDTO {
     private String login;
 
     @NotBlank(message = "password is required")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+])[a-zA-Z\\d!@#$%^&*()_+]{8,}$", message = "password invalid")
     @Schema(description = "Password", example = "Ab*1example")
     private String password;
 }
