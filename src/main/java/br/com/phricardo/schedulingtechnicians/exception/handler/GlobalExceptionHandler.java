@@ -61,8 +61,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<?> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
-            return ResponseEntity.status(CONFLICT)
-                .body(new ErrorResponse(CONFLICT.value(), ex.getLocalizedMessage()));
+        var message = ex.getLocalizedMessage();
+        final var constraintName = ex.getMostSpecificCause().getMessage();
+        if (constraintName.startsWith("Duplicate entry")) {
+            String[] parts = constraintName.split("'");
+            final var value = parts[1];
+            final var column = parts[3].substring(parts[3].lastIndexOf(".") + 1);
+            message = String.format("The %s '%s' is already registered", column, value);
+        }
+        return ResponseEntity.status(CONFLICT).body(new ErrorResponse(CONFLICT.value(), message));
     }
 
     @ExceptionHandler(NoSuchElementException.class)
