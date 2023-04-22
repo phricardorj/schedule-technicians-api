@@ -2,6 +2,7 @@ package br.com.phricardo.schedulingtechnicians.exception.handler;
 
 import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -56,6 +57,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleAccessDenied() {
         return ResponseEntity.status(FORBIDDEN)
                 .body(new ErrorResponse(FORBIDDEN.value(), "Access denied"));
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<?> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+            return ResponseEntity.status(CONFLICT)
+                .body(new ErrorResponse(CONFLICT.value(), ex.getLocalizedMessage()));
     }
 
     @ExceptionHandler(NoSuchElementException.class)
