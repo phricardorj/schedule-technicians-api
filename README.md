@@ -46,9 +46,3 @@ docker-compose up -d
 - [✔️][PATCH] Reschedule Scheduling by Service Order (OS)
 - [✔️][DELETE] Cancel Scheduling by Service Order (OS)
 ```
-
-### [PT-BR] Substituições do Spring Boot 2.x
-- Classes, métodos e propriedades que foram obsoletos no Spring Boot 2.x foram removidos nesta versão.
-- Mudanças nos Requisitos Mínimos
-- Atualizações de dependência
-- Nas novas notas de lançamento do Spring boot 3, eles informam que esta versão usará Jakarta EE 9 (libs nomeadas como jakarta) em vez de JEE (libs nomeadas como javax).
