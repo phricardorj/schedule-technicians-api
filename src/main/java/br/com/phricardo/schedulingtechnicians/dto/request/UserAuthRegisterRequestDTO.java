@@ -22,4 +22,10 @@ public class UserAuthRegisterRequestDTO {
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+])[a-zA-Z\\d!@#$%^&*()_+]{8,}$", message = "password invalid")
     @Schema(description = "Password", example = "Ab*1example")
     private String password;
+
+    @NotBlank(message = "role is required")
+    @Pattern(regexp = "^(CUSTOMER|TECHNICIAN|MANAGER)$",
+            flags = Pattern.Flag.CASE_INSENSITIVE,
+            message = "Invalid value. Accepted values: CUSTOMER, TECHNICIAN, MANAGER.")
+    private String role;
 }

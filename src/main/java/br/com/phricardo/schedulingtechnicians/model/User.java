@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -26,9 +27,12 @@ public class User implements UserDetails {
     private String login;
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
     }
 
     @Override

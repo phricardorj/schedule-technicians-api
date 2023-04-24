@@ -14,11 +14,17 @@ public abstract class UserAuthRegisterRequestMapper {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Mapping(source = "role", target = "role", qualifiedByName = "toUpperCase")
     @Mapping(source = "password", target = "password", qualifiedByName = "encodePassword")
     public abstract User from(UserAuthRegisterRequestDTO userAuthRegisterRequestDTO);
 
     @Named("encodePassword")
     protected String encodePassword(String password) {
         return passwordEncoder.encode(password);
+    }
+
+    @Named("toUpperCase")
+    protected String toUpperCase(String text) {
+        return text.toUpperCase();
     }
 }
