@@ -7,6 +7,7 @@ import br.com.phricardo.schedulingtechnicians.service.CustomerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,13 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/api/v1/customer")
 @Tag(name = "Customer", description = "Endpoints for managing customer information")
 @SecurityRequirement(name = "bearer-key")
+@RequiredArgsConstructor
 public class CustomerController {
 
     private final CustomerService customerService;
 
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
 
     @PostMapping
     public ResponseEntity<CustomerResponseDTO> register(@Valid @RequestBody CustomerRequestDTO customerRequestDTO) {

@@ -11,7 +11,7 @@ import br.com.phricardo.schedulingtechnicians.repository.CustomerRepository;
 import br.com.phricardo.schedulingtechnicians.repository.SchedulingRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ import java.net.URI;
 import static java.util.Optional.*;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SchedulingService {
 
     private final SchedulingRepository repository;

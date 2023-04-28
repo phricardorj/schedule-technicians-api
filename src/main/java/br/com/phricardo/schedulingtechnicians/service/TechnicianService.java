@@ -10,7 +10,7 @@ import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import br.com.phricardo.schedulingtechnicians.repository.TechnicianRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ import java.net.URI;
 import static java.util.Optional.*;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TechnicianService {
 
     private final TechnicianRepository repository;

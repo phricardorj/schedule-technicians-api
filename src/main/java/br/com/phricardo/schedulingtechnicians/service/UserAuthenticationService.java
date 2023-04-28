@@ -7,7 +7,7 @@ import br.com.phricardo.schedulingtechnicians.dto.response.TokenResponseDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.mapper.TokenResponseMapper;
 import br.com.phricardo.schedulingtechnicians.model.User;
 import br.com.phricardo.schedulingtechnicians.repository.UserAuthRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import static java.util.Optional.of;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserAuthenticationService implements UserDetailsService {
 
     private final UserAuthRepository repository;
