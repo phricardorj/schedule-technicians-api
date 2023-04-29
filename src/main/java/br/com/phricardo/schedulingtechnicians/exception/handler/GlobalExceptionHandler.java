@@ -1,5 +1,6 @@
 package br.com.phricardo.schedulingtechnicians.exception.handler;
 
+import br.com.phricardo.schedulingtechnicians.exception.LoginException;
 import br.com.phricardo.schedulingtechnicians.exception.RegistrationException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -44,7 +45,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> handleBadCredentials() {
         return ResponseEntity.status(UNAUTHORIZED)
-                .body(new ErrorResponse(UNAUTHORIZED.value(), "Invalid credentials"));
+                .body(new ErrorResponse(UNAUTHORIZED.value(), "Login does not exist or password is invalid"));
+    }
+
+    @ExceptionHandler(LoginException.class)
+    public ResponseEntity<?> handleLoginException(LoginException ex) {
+        return ResponseEntity.status(UNAUTHORIZED)
+                .body(new ErrorResponse(UNAUTHORIZED.value(), ex.getLocalizedMessage()));
     }
 
     @ExceptionHandler(AuthenticationException.class)

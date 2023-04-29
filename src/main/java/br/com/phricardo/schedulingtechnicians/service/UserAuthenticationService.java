@@ -5,6 +5,7 @@ import br.com.phricardo.schedulingtechnicians.dto.request.UserAuthRegisterReques
 import br.com.phricardo.schedulingtechnicians.dto.request.mapper.UserAuthRegisterRequestMapper;
 import br.com.phricardo.schedulingtechnicians.dto.response.TokenResponseDTO;
 import br.com.phricardo.schedulingtechnicians.dto.response.mapper.TokenResponseMapper;
+import br.com.phricardo.schedulingtechnicians.exception.LoginException;
 import br.com.phricardo.schedulingtechnicians.model.User;
 import br.com.phricardo.schedulingtechnicians.repository.UserAuthRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import static java.util.Optional.*;
 import static java.util.Optional.of;
 
 @Service
@@ -41,15 +43,23 @@ public class UserAuthenticationService implements UserDetailsService {
     }
 
     public TokenResponseDTO loginUser(UserAuthLoginRequestDTO loginRequestDTO, AuthenticationManager manager) {
-        return of(loginRequestDTO)
-                .map(r -> new UsernamePasswordAuthenticationToken(r.getLogin(), r.getPassword()))
-                .map(manager::authenticate)
-                .map(Authentication::getPrincipal)
-                .map(principal -> (User) principal)
-                .map(tokenService::generate)
-                .map(tokenResponseMapper::from)
-                .orElseThrow(() -> new RuntimeException("Failed to generate authentication token"));
-   }
+        final var login = loginRequestDTO.getLogin();
+        final var password = loginRequestDTO.getPassword();
+        final var existsByLogin = repository.existsByLogin(login);
+
+        return of(existsByLogin)
+                .filter(existsUser -> existsUser)
+                .map(existsUser -> new UsernamePasswordAuthenticationToken(login, password))
+                .map(token -> ofNullable(manager.authenticate(token))
+                        .map(auth -> {
+                            final var principal = auth.getPrincipal();
+                            return  (User) principal;
+                        })
+                        .map(tokenService::generate)
+                        .map(tokenResponseMapper::from)
+                        .orElseThrow(LoginException::new))
+                .orElseThrow(LoginException::new);
+    }
 
     public UserDetails getCurrentUserDetails() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
