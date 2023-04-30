@@ -29,7 +29,7 @@ public class CustomerService {
     private final LocationService locationService;
 
     @Transactional
-    public ResponseEntity<CustomerResponseDTO> register(CustomerRequestDTO dto) {
+    public ResponseEntity<CustomerResponseDTO> register(final CustomerRequestDTO dto) {
         return of(requestMapper.from(dto))
                 .map(repository::save)
                 .map(saved ->
@@ -40,7 +40,7 @@ public class CustomerService {
                 .orElseThrow(() -> new RegistrationException("Failed to register. Please verify the provided data and try again."));
     }
 
-    public ResponseEntity<CustomerResponseDTO> getCustomerById(Long id) {
+    public ResponseEntity<CustomerResponseDTO> getCustomerById(final Long id) {
         return repository.findById(id)
                 .map(responseMapper::from)
                 .map(ResponseEntity::ok)
@@ -48,13 +48,13 @@ public class CustomerService {
     }
 
     @Transactional
-    public void deleteCustomerById(Long id) {
+    public void deleteCustomerById(final Long id) {
         repository.delete(repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + id)));
     }
 
     @Transactional
-    public ResponseEntity<CustomerResponseDTO> update(Long id, CustomerUpdateDTO customerUpdateDTO) {
+    public ResponseEntity<CustomerResponseDTO> update(final Long id, final CustomerUpdateDTO customerUpdateDTO) {
         return repository.findById(id)
                 .map(customer -> {
                     updateMapper.updateCustomerFromDTO(customerUpdateDTO, customer);

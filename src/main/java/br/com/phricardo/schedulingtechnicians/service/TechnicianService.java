@@ -29,7 +29,7 @@ public class TechnicianService {
     private final LocationService locationService;
 
     @Transactional
-    public ResponseEntity<TechnicianResponseDTO> register(TechnicianRequestDTO dto) {
+    public ResponseEntity<TechnicianResponseDTO> register(final TechnicianRequestDTO dto) {
         return of(requestMapper.from(dto))
                 .map(repository::save)
                 .map(saved ->
@@ -40,7 +40,7 @@ public class TechnicianService {
                 .orElseThrow(() -> new RegistrationException("Failed to register. Please verify the provided data and try again."));
     }
 
-    public ResponseEntity<TechnicianResponseDTO> getTechnicianByEnrollment(Long enrollment) {
+    public ResponseEntity<TechnicianResponseDTO> getTechnicianByEnrollment(final Long enrollment) {
         return repository.findByEnrollment(enrollment)
                 .map(responseMapper::from)
                 .map(ResponseEntity::ok)
@@ -48,13 +48,13 @@ public class TechnicianService {
     }
 
     @Transactional
-    public void deleteTechnicianByEnrollment(Long enrollment) {
+    public void deleteTechnicianByEnrollment(final Long enrollment) {
         repository.delete(repository.findByEnrollment(enrollment)
                 .orElseThrow(() -> new EntityNotFoundException("Technician not found with enrollment: " + enrollment)));
     }
 
     @Transactional
-    public ResponseEntity<TechnicianResponseDTO> update(Long enrollment, TechnicianUpdateDTO technicianUpdateDTO) {
+    public ResponseEntity<TechnicianResponseDTO> update(final Long enrollment, final TechnicianUpdateDTO technicianUpdateDTO) {
         return repository.findById(enrollment)
                 .map(technician -> {
                     updateMapper.updateTechnicianFromDTO(technicianUpdateDTO, technician);

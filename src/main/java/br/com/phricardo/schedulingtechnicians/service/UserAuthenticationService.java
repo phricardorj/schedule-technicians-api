@@ -31,18 +31,18 @@ public class UserAuthenticationService implements UserDetailsService {
     private final TokenService tokenService;
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String login) throws UsernameNotFoundException {
         return repository.findByEmailOrCpf(login, login);
     }
 
-    public User registerUser(UserAuthRegisterRequestDTO registerRequestDTO) {
+    public User registerUser(final UserAuthRegisterRequestDTO registerRequestDTO) {
         return of(registerRequestDTO)
                 .map(registerRequestMapper::from)
                 .map(repository::save)
                 .orElseThrow(NullPointerException::new);
     }
 
-    public TokenResponseDTO loginUser(UserAuthLoginRequestDTO loginRequestDTO, AuthenticationManager manager) {
+    public TokenResponseDTO loginUser(final UserAuthLoginRequestDTO loginRequestDTO, final AuthenticationManager manager) {
         final var login = loginRequestDTO.getLogin();
         final var password = loginRequestDTO.getPassword();
         final var existsByLogin = repository.existsByEmailOrCpf(login, login);

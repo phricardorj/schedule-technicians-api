@@ -30,7 +30,7 @@ public class CompanyService {
     private final CompanyUpdateMapper updateMapper;
     private final LocationService locationService;
 
-    public ResponseEntity<CompanyResponseDTO> getCompanyById(Long id) {
+    public ResponseEntity<CompanyResponseDTO> getCompanyById(final Long id) {
         return repository.findById(id)
                 .map(responseMapper::from)
                 .map(ResponseEntity::ok)
@@ -38,7 +38,7 @@ public class CompanyService {
     }
 
     @Transactional
-    public ResponseEntity<CompanyResponseDTO> register(CompanyRequestDTO dto) {
+    public ResponseEntity<CompanyResponseDTO> register(final CompanyRequestDTO dto) {
         return of(requestMapper.from(dto))
                 .map(repository::save)
                 .map(savedCompany ->
@@ -50,14 +50,14 @@ public class CompanyService {
     }
 
     @Transactional
-    public void deleteCompanyById(Long id) {
+    public void deleteCompanyById(final Long id) {
          final var company = repository.findById(id)
                  .orElseThrow(() -> new EntityNotFoundException("Company not found with ID: " + id));
          repository.delete(company);
     }
 
     @Transactional
-    public ResponseEntity<CompanyResponseDTO> update(Long id, CompanyUpdateDTO companyUpdateDTO) {
+    public ResponseEntity<CompanyResponseDTO> update(final Long id, final CompanyUpdateDTO companyUpdateDTO) {
       return repository.findById(id)
                 .map(company -> {
                     updateMapper.updateCompanyFromDTO(companyUpdateDTO, company);

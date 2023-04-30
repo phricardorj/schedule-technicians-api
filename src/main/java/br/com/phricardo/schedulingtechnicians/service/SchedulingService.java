@@ -31,7 +31,7 @@ public class SchedulingService {
     private final LocationService locationService;
 
     @Transactional
-    public ResponseEntity<?> register(SchedulingRequestDTO schedulingRequestDTO) throws RegistrationException {
+    public ResponseEntity<?> register(final SchedulingRequestDTO schedulingRequestDTO) throws RegistrationException {
         return customerRepository.findById(schedulingRequestDTO.getCustomerId())
                 .map(customer -> of(schedulingRequestDTO)
                         .map(requestMapper::from)
@@ -43,7 +43,7 @@ public class SchedulingService {
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + schedulingRequestDTO.getCustomerId()));
     }
 
-    public ResponseEntity<SchedulingResponseDTO> getSchedulingByServiceOrder(String serviceOrder) {
+    public ResponseEntity<SchedulingResponseDTO> getSchedulingByServiceOrder(final String serviceOrder) {
         return repository.findByOs(serviceOrder)
                 .map(responseMapper::from)
                 .map(ResponseEntity::ok)
@@ -51,13 +51,13 @@ public class SchedulingService {
     }
 
     @Transactional
-    public void deleteSchedulingByServiceOrder(String serviceOrder) {
+    public void deleteSchedulingByServiceOrder(final String serviceOrder) {
         repository.delete(repository.findByOs(serviceOrder)
                 .orElseThrow(() -> new EntityNotFoundException("Scheduling not found with service order: " + serviceOrder)));
     }
 
     @Transactional
-    public ResponseEntity<SchedulingResponseDTO> update(String serviceOrder, SchedulingUpdateDTO schedulingUpdateDTO) {
+    public ResponseEntity<SchedulingResponseDTO> update(final String serviceOrder, final SchedulingUpdateDTO schedulingUpdateDTO) {
         return repository.findByOs(serviceOrder)
                 .map(scheduling -> {
                     updateMapper.updateSchedulingFromDTO(schedulingUpdateDTO, scheduling);

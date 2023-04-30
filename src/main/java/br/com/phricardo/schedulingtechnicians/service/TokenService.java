@@ -24,7 +24,7 @@ public class TokenService {
     @Value("${app.jwt.expiration-time-in-hours}")
     private Integer JWT_EXPIRATION_TIME_IN_HOURS;
 
-    public String generate(@NonNull User user) {
+    public String generate(@NonNull final User user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(JWT_SECURITY_KEY);
             return JWT.create()
@@ -42,7 +42,7 @@ public class TokenService {
         return LocalDateTime.now().plusHours(JWT_EXPIRATION_TIME_IN_HOURS).toInstant(ZoneOffset.of("-03:00"));
     }
 
-    public String validateAndGetSubject(String token) {
+    public String validateAndGetSubject(final String token) {
         Algorithm algorithm = Algorithm.HMAC256(JWT_SECURITY_KEY);
         return JWT.require(algorithm)
                 .withIssuer(JWT_ISSUER)
