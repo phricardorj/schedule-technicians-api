@@ -14,6 +14,7 @@ public abstract class UserAuthRegisterRequestMapper {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Mapping(source = "email", target = "email", qualifiedByName = "toLowerCase")
     @Mapping(source = "role", target = "role", qualifiedByName = "toUpperCase")
     @Mapping(source = "password", target = "password", qualifiedByName = "encodePassword")
     public abstract User from(UserAuthRegisterRequestDTO userAuthRegisterRequestDTO);
@@ -26,5 +27,10 @@ public abstract class UserAuthRegisterRequestMapper {
     @Named("toUpperCase")
     protected String toUpperCase(String text) {
         return text.toUpperCase();
+    }
+
+    @Named("toLowerCase")
+    protected String toLowerCase(String text) {
+        return text.toLowerCase();
     }
 }

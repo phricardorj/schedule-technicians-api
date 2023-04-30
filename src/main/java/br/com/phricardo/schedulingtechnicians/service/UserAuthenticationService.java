@@ -32,7 +32,7 @@ public class UserAuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return repository.findByLogin(login);
+        return repository.findByEmailOrCpf(login, login);
     }
 
     public User registerUser(UserAuthRegisterRequestDTO registerRequestDTO) {
@@ -45,7 +45,7 @@ public class UserAuthenticationService implements UserDetailsService {
     public TokenResponseDTO loginUser(UserAuthLoginRequestDTO loginRequestDTO, AuthenticationManager manager) {
         final var login = loginRequestDTO.getLogin();
         final var password = loginRequestDTO.getPassword();
-        final var existsByLogin = repository.existsByLogin(login);
+        final var existsByLogin = repository.existsByEmailOrCpf(login, login);
 
         return of(existsByLogin)
                 .filter(existsUser -> existsUser)

@@ -2,7 +2,6 @@ package br.com.phricardo.schedulingtechnicians.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,9 +12,8 @@ import lombok.NoArgsConstructor;
 @Schema(title = "Auth Login Request")
 public class UserAuthLoginRequestDTO {
 
-    @NotBlank(message = "email is required")
-    @Pattern(regexp = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$", message = "login needs to be a valid email")
-    @Schema(description = "Email", example = "contato@empresaxyz.com.br")
+    @NotBlank(message = "login is required")
+    @Schema(description = "Email or CPF", example = "contato@empresaxyz.com.br or 122.333.442-42")
     private String login;
 
     @NotBlank(message = "password is required")
